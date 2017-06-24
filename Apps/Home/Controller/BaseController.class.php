@@ -1,5 +1,6 @@
 <?php namespace Home\Controller;
 
+use Home\Model\MenuModel as Menu;
 use Think\Controller;
 
 class BaseController extends Controller
@@ -16,6 +17,8 @@ class BaseController extends Controller
 
         // 设置模板所需的资源地址
         $this->set_view_url();
+
+        $this->get_navigate_menu();
     }
 
     /**
@@ -23,8 +26,11 @@ class BaseController extends Controller
      */
     protected function set_view_url()
     {
+        // 获取基础目录
+        $base_path = 'http://' . $_SERVER['SERVER_NAME'] . APP_PATH;
+
         // 获取资源目录地址
-        $asset_path = APP_PATH .'Home/Asset';
+        $asset_path = "{$base_path}Home/Asset";
 
         // 处理资源目录路径地址
         $asset_path = str_replace('\\', '/', $asset_path);
@@ -37,5 +43,13 @@ class BaseController extends Controller
 
         // 传递脚本资源目录地址
         $this->assign('__JS__', "{$asset_path}/js");
+
+        // 传递视图文件目录地址
+        $this->assign('__VIEW__', "{$base_path}View");
+    }
+
+    protected function get_navigate_menu()
+    {
+
     }
 }
