@@ -95,9 +95,17 @@
 	<div class="layout-right">
 		<h2>禹译公告</h2>
 		<div class="hotart">
-			<p><span class="red">1</span><a href="index.html">如何建立个人博客?</a></p>
-			<p><span class="orange">2</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="pink">3</span><a href="index.html">浅谈：html5和html的区别</a></p>
+			<if condition="$notices">
+			<foreach name="notices" item="notice" key="index" >
+				<p><span
+				<if condition="0==$index">  class="red"
+				<elseif condition="1 == $index"/> class="orange"
+				<else /> class="pink"
+				</if>><{$index + 1}></span><a href="index.html"><{$notice['title']}></a></p>
+			</foreach>
+			<else/>
+				<p>暂无公告!</p>
+			</if>
 		</div>
 		<h2 class="clear">站内搜索</h2>
 		<div class="search">

@@ -13,12 +13,14 @@
         <p><img src="<{$__IMG__}>/logo.png"/></p>
         <h1>生活百般滋味,人生需要笑对</h1>
         <ul>
-            <li><a href="index.html" class="bluecolor">首页</a></li>
-            <li><a href="tech.html">技术分享</a><img src="<{$__IMG__}>/hot.gif" class="hot"/></li>
-            <li><a href="opera.html">开心剧场</a></li>
-            <li><a href="note.html">我的日记</a></li>
-            <li><a href="work.html">我的作品</a></li>
-            <li><a href="about.html">关于禹译</a></li>
+            <li><a href="/" <if condition="'/' == $__URI__">class="bluecolor"</if> >首页</a></li>
+            <foreach name="__MENU__" item="menu" key="index" >
+                <li><a href="<{$menu['url']}>" <if condition="$menu['url'] == $__URI__">class="bluecolor"</if>><{$menu['name']}></a>
+                    <if condition="0 == $index">
+                        <img src="<{$__IMG__}>/hot.gif" class="hot"/>
+                    </if>
+                </li>
+            </foreach>
             <li>
                 <select name="">
                     <option value="">归档</option>

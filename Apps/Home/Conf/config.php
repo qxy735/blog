@@ -15,4 +15,6 @@ return array(
     'DB_PORT'      =>  '3306',
     'DB_PREFIX'    =>  'blog_',
     'DB_CHARSET'   =>  'utf8',
+    'LOG_RECORD' => true,
+    'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR,WARN',
 );

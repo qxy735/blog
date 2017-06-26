@@ -27,6 +27,27 @@ class MenuModel extends BaseModel
      */
     const MENU_TYPE_WEIXIN = 2;
     /**
+     * 表字段
+     *
+     * @var array
+     */
+    public $columns = [
+        'id',
+        'parentid',
+        'haschild',
+        'name',
+        'code',
+        'url',
+        'auth',
+        'type',
+        'enabled',
+        'displayorder',
+        'createtime',
+        'creator',
+        'lastoperate',
+        'lastoperator',
+    ];
+    /**
      * 定义表名
      *
      * @var string
