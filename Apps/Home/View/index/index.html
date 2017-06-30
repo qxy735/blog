@@ -116,14 +116,9 @@
 		<h2 class="clear">标签云</h2>
 		<div class="tag">
 			<ul>
-				<li><a href="" class="pink">php</a></li>
-				<li><a href="" class="blue1">nginx</a></li>
-				<li><a href="" class="orange">css</a></li>
-				<li><a href="" class="green">html</a></li>
-				<li><a href="" class="blue2">memcache</a></li>
-				<li><a href="" class="yellow">mysql</a></li>
-				<li><a href="" class="blue3">笑话</a></li>
-				<li><a href="" class="red">日记</a></li>
+				<foreach name="tags" item="tag" key="index" >
+					<li><a href="" class="<{$tag_styles[$index]}>"><{$tag['name']}></a></li>
+				</foreach>
 			</ul>
 		</div>
 		<h2 class="clear">热门推荐</h2>
