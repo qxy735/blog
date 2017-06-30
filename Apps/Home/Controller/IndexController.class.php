@@ -1,6 +1,7 @@
 <?php namespace Home\Controller;
 
 use Home\Model\ArticleModel as Article;
+use Home\Model\CategoryModel as Category;
 use Home\Model\LinkModel as Link;
 use Home\Model\NoticeModel as Notice;
 use Home\Model\TagModel as Tag;
@@ -15,6 +16,8 @@ class IndexController extends BaseController
     public function index()
     {
         $notices = $tags = $links = $articles = $hots = [];
+
+        $article_counts = 0;
 
         try {
             // 获取公告信息，默认取三条最新公告信息
@@ -38,10 +41,14 @@ class IndexController extends BaseController
                 'ishot' => Tag::TAG_IS_HOT,
             ])->order('id desc')->limit(8)->getField('id,name,ishot');
 
+            $tags = $tags ?: [];
+
             // 获取友情链接
             $links = D('link')->where([
                 'enabled' => Link::LINK_IS_ENABLED,
             ])->order('displayorder desc,id desc')->limit(6)->getField('id,name,url');
+
+            $links = $links ?: [];
 
             // 获取热门推荐
             $hots = D('article')->where([
@@ -49,12 +56,68 @@ class IndexController extends BaseController
                 'status' => Article::ARTICLE_STATUS_NORMAL,
             ])->order('visitcount desc,id desc')->limit(9)->getField('id,title,status');
 
+            $hots = $hots ? array_values($hots) : [];
+
             // 处理文章标题
             $hots = array_map(function ($hot) {
                 $hot['title'] = $this->substr($hot['title']);
 
                 return $hot;
             }, $hots);
+
+            // 获取最新发布的文章
+            $articles = D('article')->where([
+                'ispublic' => Article::ARTICLE_IS_PUBLIC,
+                'status' => Article::ARTICLE_STATUS_NORMAL,
+            ]);
+
+            $article_counts = clone $articles;
+
+            $article_counts = $article_counts->count();
+
+            $articles = $articles->order('id desc')->limit(6)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
+
+            $articles = $articles ?: [];
+
+            $category_ids = $categorys = [];
+
+            // 处理最新发布的文章内容和标题
+            $articles = array_map(function ($article) use (&$category_ids) {
+                // 获取文章分类 ID
+                $category_ids[] = $article['categoryid'];
+
+                // 处理文章标题
+                $article['title'] = $this->substr($article['title']);
+
+                // 处理文章内容
+                $article['content'] = $this->substr($article['content'], 50);
+
+                // 处理发布时间
+                $article['createtime'] = $article['createtime'] ? date('Y-m-d H:i:s', $article['createtime']) : date('Y-m-d H:i:s');
+
+                // 处理文章作者
+                $article['author'] = $article['author'] ?: '公子禹';
+
+                return $article;
+            }, $articles);
+
+            // 去除重复分类 ID
+            $category_ids = $category_ids ? array_unique($category_ids) : [];
+
+            // 获取分类名
+            if ($category_ids) {
+                $categorys = D('category')->where('id in(' . implode(',', $category_ids) . ') and enabled=' . Category::CATEGORY_IS_ENABLED)->getField('id,name');
+            }
+
+            // 获取文章所属分类名
+            $articles = array_map(function ($article) use ($categorys) {
+                $article['category'] = isset($categorys[$article['categoryid']]) ? $categorys[$article['categoryid']] : '禹译';
+
+                return $article;
+            }, $articles);
+
+            // 卸载空闲变量
+            unset($categorys);
         } catch (Exception $e) {
             // 记录错误日志信息
             Log::write($e->getMessage());
@@ -86,6 +149,15 @@ class IndexController extends BaseController
 
         // 传递文章信息
         $this->assign('articles', $articles);
+
+        // 卸载空闲变量
+        unset($articles);
+
+        // 传递总文章数
+        $this->assign('article_counts', $article_counts);
+
+        // 传递当前日期
+        $this->assign('date', date('Y-m-d'));
 
         // 显示首页页面
         $this->display('index/index');

@@ -125,6 +125,8 @@ img{
 .layout .article .article-img{
 	width: 215px;
 	overflow: hidden;
+	height: 144px;
+	border: 1px solid #EEEEEE;
 }
 .layout .article .article-content{
 	width: 390px;
@@ -317,6 +319,18 @@ img{
 	text-align: center;
 	margin: 20px 0 30px;
 	*padding-bottom: 30px;
+}
+.layout .page .current{
+	background-color: white;
+	color: black;
+	border: 1px solid #40AADA;
+	cursor: not-allowed;
+}
+.layout .page .current:hover{
+	background-color: white;
+	color: black;
+	border: 1px solid #40AADA;
+	cursor: not-allowed;
 }
 .layout .page a{
 	border: 1px solid #EEEEEE;

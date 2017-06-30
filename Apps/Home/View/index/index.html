@@ -1,93 +1,37 @@
 <include file="./header" />
 <div class="layout">
 	<div class="layout-left">
-		<h2>技术分享</h2>
-		<div class="article">
-			<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-			<div class="article-content">
-				<h3><a href="article.html">禹译网开心每一天</a></h3>
-				<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-				<p><a href="article.html">前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。</a></p>
-				<p class="use">
-					<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-					<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-					<a href="article.html" class="readall">阅读全文</a>
-				</p>
+		<h2>最新文章</h2>
+		<if condition="$articles">
+			<foreach name="articles" item="article" key="index" >
+				<div class="article">
+					<div class="article-img"><if condition="$article['cover']"><img src="<{$article['cover']}>" /><else/><img src="<{$__IMG__}>/article.jpg"/></if></div>
+					<div class="article-content">
+						<h3><a href="article.html"><{$article['title']}></a></h3>
+						<p><img src="<{$__IMG__}>/my-min.jpg" /><i><{$article['author']}></i><span>发布时间: <{$article['createtime']}></span><span>归属: <{$article['category']}></span></p>
+						<p><a href="article.html"><{$article['content']}></a></p>
+						<p class="use">
+							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b><{$article['visitcount']}></b>)</span>
+							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b><{$article['commentcount']}></b>)</span>
+							<a href="article.html" class="readall">阅读全文</a>
+						</p>
+					</div>
+				</div>
+			</foreach>
+		<else/>
+			<div class="article">
+				<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
+				<div class="article-content">
+					<h3><a href="article.html">禹译公告</a></h3>
+					<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: <{$date}></span><span>归属: 禹译网</span></p>
+					<p>今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。</p>
+				</div>
 			</div>
-		</div>
-		<div class="article">
-			<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-			<div class="article-content">
-				<h3>禹译网开心每一天</h3>
-				<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-				<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-				<p class="use">
-					<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-					<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-					<a href="index.html" class="readall">阅读全文</a>
-				</p>
-			</div>
-		</div>
-		<div class="article">
-			<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-			<div class="article-content">
-				<h3>禹译网开心每一天</h3>
-				<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-				<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-				<p class="use">
-					<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-					<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-					<a href="index.html" class="readall">阅读全文</a>
-				</p>
-			</div>
-		</div>
-		<div class="article">
-			<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-			<div class="article-content">
-				<h3>禹译网开心每一天</h3>
-				<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-				<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-				<p class="use">
-					<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-					<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-					<a href="index.html" class="readall">阅读全文</a>
-				</p>
-			</div>
-		</div>
-		<div class="article">
-			<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-			<div class="article-content">
-				<h3>禹译网开心每一天</h3>
-				<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-				<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-				<p class="use">
-					<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-					<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-					<a href="index.html" class="readall">阅读全文</a>
-				</p>
-			</div>
-		</div>
-		<div class="article">
-			<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-			<div class="article-content">
-				<h3>禹译网开心每一天</h3>
-				<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-				<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-				<p class="use">
-					<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-					<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-					<a href="index.html" class="readall">阅读全文</a>
-				</p>
-			</div>
-		</div>
+		</if>
 		<div class="page">
 			<a href="">首页</a>
 			<a href="">上一页</a>
-			<a href="">1</a>
-			<a href="">2</a>
-			<a href="">3</a>
-			<a href="">...</a>
-			<a href="">10</a>
+			<a href="javascript:void(0);" class="current">第 <span id="page_num">1</span> 页</a>
 			<a href="">下一页</a>
 			<a href="">末页</a>
 		</div>
@@ -129,7 +73,7 @@
 		<div class="hotart">
 			<if condition="$hots">
 				<foreach name="hots" item="hot" key="index" >
-					<p><span class="<{$hot_styles[$index-1]}>"><{$index}></span><a href="index.html"><{$hot['title']}></a></p>
+					<p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="index.html"><{$hot['title']}></a></p>
 				</foreach>
 			<else/>
 				<p>暂无热门推荐!</p>
