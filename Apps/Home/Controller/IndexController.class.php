@@ -1,5 +1,6 @@
 <?php namespace Home\Controller;
 
+use Home\Model\LinkModel as Link;
 use Home\Model\NoticeModel as Notice;
 use Home\Model\TagModel as Tag;
 use Think\Exception;
@@ -7,9 +8,12 @@ use Think\Log;
 
 class IndexController extends BaseController
 {
+    /**
+     * 显示网站首页
+     */
     public function index()
     {
-        $notices = $tags = [];
+        $notices = $tags = $links = [];
 
         try {
             // 获取公告信息，默认取三条最新公告信息
@@ -38,6 +42,11 @@ class IndexController extends BaseController
                 'enabled' => Tag::TAG_IS_ENABLED,
                 'ishot' => Tag::TAG_IS_HOT,
             ])->order('id desc')->limit(8)->getField('id,name,ishot');
+
+            // 获取友情链接
+            $links = D('link')->where([
+                'enabled' => Link::LINK_IS_ENABLED,
+            ])->order('displayorder desc,id desc')->limit(6)->getField('id,name,url');
         } catch (Exception $e) {
             // 记录错误日志信息
             Log::write($e->getMessage());
@@ -54,6 +63,9 @@ class IndexController extends BaseController
 
         // 传递标签显示样式名
         $this->assign('tag_styles', $tag_styles);
+
+        // 传递友情链接信息
+        $this->assign('links', $links);
 
         // 显示首页页面
         $this->display('index/index');

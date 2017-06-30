@@ -116,9 +116,13 @@
 		<h2 class="clear">标签云</h2>
 		<div class="tag">
 			<ul>
+				<if condition="$tags">
 				<foreach name="tags" item="tag" key="index" >
 					<li><a href="" class="<{$tag_styles[$index]}>"><{$tag['name']}></a></li>
 				</foreach>
+				<else/>
+					<li style="color: black;">暂无标签!</li>
+				</if>
 			</ul>
 		</div>
 		<h2 class="clear">热门推荐</h2>
@@ -143,12 +147,13 @@
 		<h2 class="clear">友情链接</h2>
 		<div class="tag">
 			<ul>
-				<li><a href="" class="pink" target="_blank">禹译建站</a></li>
-				<li><a href="" class="blue1" target="_blank">禹译考试网</a></li>
-				<li><a href="" class="orange" target="_blank">禹译微博</a></li>
-				<li><a href="" class="pink" target="_blank">禹译电影网</a></li>
-				<li><a href="" class="orange" target="_blank">禹译微博</a></li>
-				<li><a href="" class="blue1" target="_blank">禹译音乐网</a></li>
+				<if condition="$links">
+					<foreach name="links" item="link" key="index" >
+						<li><a href="<{$link['url']}>" class="<{$tag_styles[$index]}>" target="_blank"><{$link['name']}></a></li>
+					</foreach>
+				<else/>
+					<li style="color: black;">暂无友情链接!</li>
+				</if>
 			</ul>
 		</div>
 	</div>
