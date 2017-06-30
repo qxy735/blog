@@ -118,7 +118,7 @@
 			<ul>
 				<if condition="$tags">
 				<foreach name="tags" item="tag" key="index" >
-					<li><a href="" class="<{$tag_styles[$index]}>"><{$tag['name']}></a></li>
+					<li><a href="" class="<{$tag_styles[$index-1]}>"><{$tag['name']}></a></li>
 				</foreach>
 				<else/>
 					<li style="color: black;">暂无标签!</li>
@@ -127,15 +127,13 @@
 		</div>
 		<h2 class="clear">热门推荐</h2>
 		<div class="hotart">
-			<p><span class="red">1</span><a href="index.html">如何建立个人博客?</a></p>
-			<p><span class="orange">2</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="pink">3</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="gray">4</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="gray">5</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="gray">6</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="gray">7</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="gray">8</span><a href="index.html">浅谈：html5和html的区别</a></p>
-			<p><span class="gray">9</span><a href="index.html">浅谈：html5和html的区别</a></p>
+			<if condition="$hots">
+				<foreach name="hots" item="hot" key="index" >
+					<p><span class="<{$hot_styles[$index-1]}>"><{$index}></span><a href="index.html"><{$hot['title']}></a></p>
+				</foreach>
+			<else/>
+				<p>暂无热门推荐!</p>
+			</if>
 		</div>
 		<h2 class="clear">关注我</h2>
 		<div class="me">
@@ -149,7 +147,7 @@
 			<ul>
 				<if condition="$links">
 					<foreach name="links" item="link" key="index" >
-						<li><a href="<{$link['url']}>" class="<{$tag_styles[$index]}>" target="_blank"><{$link['name']}></a></li>
+						<li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
 					</foreach>
 				<else/>
 					<li style="color: black;">暂无友情链接!</li>

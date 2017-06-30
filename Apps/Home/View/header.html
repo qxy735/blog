@@ -13,9 +13,9 @@
         <p><img src="<{$__IMG__}>/logo.png"/></p>
         <h1>生活百般滋味,人生需要笑对</h1>
         <ul>
-            <li><a href="/" <if condition="'/' == $__URI__">class="bluecolor"</if> >首页</a></li>
+            <li><a href="/" menuid="0" <if condition="'/' == $__URI__">class="bluecolor"</if> >首页</a></li>
             <foreach name="__MENU__" item="menu" key="index" >
-                <li><a href="<{$menu['url']}>" <if condition="$menu['url'] == $__URI__">class="bluecolor"</if>><{$menu['name']}></a>
+                <li><a href="<{$menu['url']}>" menuid="<{$menu['id']}>" <if condition="$menu['url'] == $__URI__">class="bluecolor"</if>><{$menu['name']}></a>
                     <if condition="0 == $index">
                         <img src="<{$__IMG__}>/hot.gif" class="hot"/>
                     </if>

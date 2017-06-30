@@ -143,4 +143,22 @@ class BaseController extends Controller
 
         return [];
     }
+
+    /**
+     * 截取字符串(获取指定长度的字符)
+     *
+     * @param $string
+     * @param int $length
+     * @return string
+     */
+    protected function substr($string, $length = 12)
+    {
+        $substr_string = mb_substr($string, 0, $length, 'utf-8');
+
+        if (mb_strlen($string, 'utf-8') > $length) {
+            $substr_string .= '...';
+        }
+
+        return $substr_string;
+    }
 }
