@@ -17,8 +17,6 @@ class IndexController extends BaseController
     {
         $notices = $tags = $links = $articles = $hots = [];
 
-        $article_counts = 0;
-
         try {
             // 获取公告信息，默认取三条最新公告信息
             $notices = D('notice')->where([
@@ -69,13 +67,7 @@ class IndexController extends BaseController
             $articles = D('article')->where([
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
                 'status' => Article::ARTICLE_STATUS_NORMAL,
-            ]);
-
-            $article_counts = clone $articles;
-
-            $article_counts = $article_counts->count();
-
-            $articles = $articles->order('id desc')->limit(6)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
+            ])->order('id desc')->limit(6)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
 
             $articles = $articles ?: [];
 
@@ -152,9 +144,6 @@ class IndexController extends BaseController
 
         // 卸载空闲变量
         unset($articles);
-
-        // 传递总文章数
-        $this->assign('article_counts', $article_counts);
 
         // 传递当前日期
         $this->assign('date', date('Y-m-d'));

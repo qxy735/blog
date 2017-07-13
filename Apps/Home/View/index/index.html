@@ -28,12 +28,8 @@
 				</div>
 			</div>
 		</if>
-		<div class="page">
-			<a href="">首页</a>
-			<a href="">上一页</a>
-			<a href="javascript:void(0);" class="current">第 <span id="page_num">1</span> 页</a>
-			<a href="">下一页</a>
-			<a href="">末页</a>
+		<div class="page" id="article-box">
+			<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
 		</div>
 	</div>
 	<div class="layout-right">
@@ -101,3 +97,43 @@
 	</div>
 </div>
 <include file="./footer" />
+<script>
+	// 初始第一页
+	var init_page = 1;
+
+	// 是否重复加载文章
+	var is_repeat_load = 0;
+
+	// 加载更多网站文章
+	function load_more_article()
+	{
+		if(is_repeat_load){
+			return;
+		}
+
+		is_repeat_load = 1;
+
+		init_page = init_page + 1;
+
+		$.ajax({
+			url:"/article/load_more",
+			data:{
+				page: init_page
+			},
+			type:'post',
+			cache:false,
+			dataType:'text',
+			async: false,
+			success:function(result){
+				if(result){
+					$('#article-box').before(result);
+				}
+				is_repeat_load = 0;
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			},
+		});
+	}
+</script>
+</body>
+</html>
