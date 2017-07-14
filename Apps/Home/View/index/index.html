@@ -7,13 +7,13 @@
 				<div class="article">
 					<div class="article-img"><if condition="$article['cover']"><img src="<{$article['cover']}>" /><else/><img src="<{$__IMG__}>/article.jpg"/></if></div>
 					<div class="article-content">
-						<h3><a href="article.html"><{$article['title']}></a></h3>
+						<h3><a href="/article/detail/id/<{$article['id']}>"><{$article['title']}></a></h3>
 						<p><img src="<{$__IMG__}>/my-min.jpg" /><i><{$article['author']}></i><span>发布时间: <{$article['createtime']}></span><span>归属: <{$article['category']}></span></p>
-						<p><a href="article.html"><{$article['content']}></a></p>
+						<p><a href="/article/detail/id/<{$article['id']}>"><{$article['content']}></a></p>
 						<p class="use">
 							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b><{$article['visitcount']}></b>)</span>
 							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b><{$article['commentcount']}></b>)</span>
-							<a href="article.html" class="readall">阅读全文</a>
+							<a href="/article/detail/id/<{$article['id']}>" class="readall">阅读全文</a>
 						</p>
 					</div>
 				</div>
@@ -24,7 +24,7 @@
 				<div class="article-content">
 					<h3><a href="article.html">禹译公告</a></h3>
 					<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: <{$date}></span><span>归属: 禹译网</span></p>
-					<p>今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。</p>
+					<p>杭州禹译网(禹译网络)分享技术文章,引领IT新时代,活到老学到老了,生活百般滋味,人生需要笑对</p>
 				</div>
 			</div>
 		</if>
@@ -50,7 +50,7 @@
 		<h2 class="clear">站内搜索</h2>
 		<div class="search">
 			<form action="search.html" method="post">
-				<input type="text"/><button></button>
+				<input type="text"/><button onclick="alert('该功能正在开发中!');return false;"></button>
 			</form>
 		</div>
 		<h2 class="clear">标签云</h2>
@@ -69,7 +69,7 @@
 		<div class="hotart">
 			<if condition="$hots">
 				<foreach name="hots" item="hot" key="index" >
-					<p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="index.html"><{$hot['title']}></a></p>
+					<p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
 				</foreach>
 			<else/>
 				<p>暂无热门推荐!</p>
@@ -77,8 +77,8 @@
 		</div>
 		<h2 class="clear">关注我</h2>
 		<div class="me">
-			<p><span>邮箱订阅:</span><a href="">点我订阅</a></p>
-			<p><span>加入群聊:</span><a href="">立即加入</a></p>
+			<p><span>邮箱订阅:</span><a href="javascript:void(0);" onclick="alert('该功能正在开发中!');">点我订阅</a></p>
+			<p><span>加入群聊:</span><a href="javascript:void(0);" onclick="alert('该功能正在开发中!');">立即加入</a></p>
 			<p id="platform-power" style="cursor: pointer;"><span>微信关注:</span>yuyinet(点击查看)</p>
 			<p class="platform" id="platform"><img src="<{$__IMG__}>/platform.jpg"/></p>
 		</div>

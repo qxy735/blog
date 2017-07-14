@@ -57,6 +57,9 @@ class BaseController extends Controller
         // 处理资源目录路径地址
         $asset_path = str_replace('\\', '/', $asset_path);
 
+        // 传递资源目录地址
+        $this->assign('__ASSET__', $asset_path);
+
         // 传递图片资源目录地址
         $this->assign('__IMG__', "{$asset_path}/image");
 

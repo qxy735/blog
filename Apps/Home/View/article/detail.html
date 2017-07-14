@@ -1,0 +1,203 @@
+<include file="./header" />
+        <div class="location">
+            <div>
+                <img src="<{$__IMG__}>/location.png"/>
+                <a href="/">首页</a>
+                <span>></span>
+                <a href="/tech">技术分享</a>
+                <if condition="$article">
+                <span>></span>
+                <a href="/article/detail/id/<{$article['id']}>"><{$article['title']}></a>
+                </if>
+            </div>
+        </div>
+        <div class="space"></div>
+		<div class="layout">
+			<div class="layout-left artc">
+                <if condition="$article">
+				<h3><{$article['title']}></h3>
+				<h5>
+					<span>发布时间:</span><{$article['createtime']}>
+					<span>作者:</span><{$article['author']}>
+					<span>浏览量:</span><{$article['visitcount']}>
+                    <span>点赞数:</span><{$article['commentcount']}>
+				</h5>
+                <div id="parse_article_content"><{$article['content']}></div>
+				<div style="width: 100%;">
+                    <p class="click"><span id="good">温暖 (1)</span><span id="bad">寒冷 (1)</span></p>
+                    <p class="reward">如果您觉得本文章对你有帮助，可以扫下二维码进行打赏。谢谢支持！ ~(@^_^@)~</p>
+                    <p class="reward-mode">
+                        <img src="<{$__IMG__}>/zfb-pay.png"/>
+                        <img src="<{$__IMG__}>/weixin-pay.png"/>
+                    </p>
+                </div>
+                <div class="comment-section">
+                    <p class="login-icon">社交帐号登录:
+                        <a href="">QQ</a>
+                        <a href="" class="weixin-icon">微信</a>
+                        <a href="" class="weibo-icon">微博</a>
+                    </p>
+                    <form action="" method="post">
+                        <p class="editor">
+                            <textarea name="comment" id="comment" placeholder="说点什么吧..."></textarea>
+                        </p>
+                        <p class="article-submit">
+                            <input type="reset" value="清空"/>
+                            <input type="submit" value="发布"/>
+                        </p>
+                        <p id="face-icon">
+                            <img src="<{$__IMG__}>/faces/baobao.gif" name="[baobao]"/>
+                            <img src="<{$__IMG__}>/faces/haixiu.gif" name="[haixiu]"/>
+                            <img src="<{$__IMG__}>/faces/huaxin.gif" name="[huaxin]"/>
+                            <img src="<{$__IMG__}>/faces/jiyan.gif" name="[jiyan]"/>
+                            <img src="<{$__IMG__}>/faces/ku.gif" name="[ku]"/>
+                            <img src="<{$__IMG__}>/faces/qian.gif" name="[qian]"/>
+                            <img src="<{$__IMG__}>/faces/taikaixin.gif" name="[taikaixin]"/>
+                            <img src="<{$__IMG__}>/faces/touxiao.gif" name="[touxiao]"/>
+                            <img src="<{$__IMG__}>/faces/xixi.gif" name="[xixi]"/>
+                            <img src="<{$__IMG__}>/faces/zhuakuang.gif" name="[zhuakuang]"/>
+                        </p>
+                    </form>
+                    <ul class="comment-content">
+                        <li>
+                            <p>
+                                <img style="border-radius: 50%;" src="<{$__IMG__}>/my-max.jpg"/>
+                            </p>
+                            <p>
+                                <span><b><a href="www.yuyinet.cn" target="_blank">禹译网</a></b></span>
+                                <span class="comment-text">欢迎大家来评论!!!</span>
+                                <span><i>2016年9月02日</i><a href="">点亮</a><a href="" class="transmit">转发</a><a href="" class="tip">举报</a></span>
+                            </p>
+                        </li>
+                        <li style="border: none;">
+                            <div class="page">
+                                <a href="">首页</a>
+                                <a href="">上一页</a>
+                                <a href="">1</a>
+                                <a href="">2</a>
+                                <a href="">3</a>
+                                <a href="">...</a>
+                                <a href="">10</a>
+                                <a href="">下一页</a>
+                                <a href="">末页</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <else/>
+                    <p class="no-article">该文章不存在!</p>
+                </if>
+			</div>
+			<div class="layout-right">
+				<h2 class="clear">热门推荐</h2>
+				<div class="hotart">
+                    <if condition="$hots">
+                        <foreach name="hots" item="hot" key="index" >
+                            <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
+                        </foreach>
+                        <else/>
+                        <p>暂无热门推荐!</p>
+                    </if>
+				</div>
+		        <h2 class="clear">软件推荐</h2>
+		        <div class="hotart">
+		            <p><span class="red">1</span><a href="index.html">putty高级链接软件</a></p>
+		            <p><span class="orange">2</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="pink">3</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="gray">4</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="gray">5</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="gray">6</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="gray">7</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="gray">8</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		            <p><span class="gray">9</span><a href="index.html">浅谈：html5和html的区别</a></p>
+		        </div>
+				<h2 class="clear">友情链接</h2>
+				<div class="tag">
+					<ul>
+                        <if condition="$links">
+                            <foreach name="links" item="link" key="index" >
+                                <li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
+                            </foreach>
+                            <else/>
+                            <li style="color: black;">暂无友情链接!</li>
+                        </if>
+					</ul>
+				</div>
+			</div>
+		</div>
+<include file="./footer" />
+    <script src="<{$__ASSET__}>/library/ueditor/ueditor.parse.js"></script>
+    <script type="text/javascript">
+        uParse('#parse_article_content', {
+            rootPath: '<{$__ASSET__}>/library/ueditor'
+        })
+    </script>
+    <script>
+    (function ($) {
+        $.extend({
+            tipsBox: function (options) {
+                options = $.extend({
+                    obj: null, //jq对象，要在那个html标签上显示
+                    str: "+1", //字符串，要显示的内容;也可以传一段html，如: "<b style='font-family:Microsoft YaHei;'>+1</b>"
+                    startSize: "12px", //动画开始的文字大小
+                    endSize: "30px", //动画结束的文字大小
+                    interval: 600, //动画时间间隔
+                    color: "#40AADA", //文字颜色
+                    callback: function () { } //回调函数
+                }, options);
+                $("body").append("<span class='num'>" + options.str + "</span>");
+                var box = $(".num");
+                var left = options.obj.offset().left + options.obj.width() / 2;
+                var top = options.obj.offset().top - options.obj.height();
+                box.css({
+                    "position": "absolute",
+                    "left": left + "px",
+                    "top": top + "px",
+                    "z-index": 9999,
+                    "font-size": options.startSize,
+                    "line-height": options.endSize,
+                    "color": options.color
+                });
+                box.animate({
+                    "font-size": options.endSize,
+                    "opacity": "0",
+                    "top": top - parseInt(options.endSize) + "px"
+                }, options.interval, function () {
+                    box.remove();
+                    options.callback();
+                });
+            }
+        });
+    })(jQuery);
+    function niceIn(prop){
+        prop.find('i').addClass('niceIn');
+        setTimeout(function(){
+            prop.find('i').removeClass('niceIn');
+        },1000);
+    }
+    $(function () {
+        $("#good").click(function () {
+            $.tipsBox({
+                obj: $(this),
+                str: "+1",
+                callback: function () {
+
+                }
+            });
+            niceIn($(this));
+        });
+        $("#bad").click(function () {
+            $.tipsBox({
+                obj: $(this),
+                str: "+1",
+                color: "red",
+                callback: function () {
+
+                }
+            });
+            niceIn($(this));
+        });
+    });
+    </script>
+</body>
+</html>

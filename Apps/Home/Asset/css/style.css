@@ -128,6 +128,12 @@ img{
 	height: 144px;
 	border: 1px solid #EEEEEE;
 }
+.layout .no-article{
+	text-align: center;
+	color: #aaaaaa;
+	height: 100px;
+	line-height: 100px;
+}
 .layout .article .article-content{
 	width: 390px;
 	padding: 0 20px;
@@ -539,20 +545,16 @@ img{
 .artc h5 span{
 	padding: 0 5px;
 }
+.artc #parse_article_content{
+	margin-top: 10px;
+	padding: 0 10px;
+}
 .artc p{
 	margin: 10px;
 	font-size: 14px;
 	letter-spacing: 1.5px;
 	line-height: 28px;
 	text-indent: 30px;
-}
-.artc pre{
-    margin: 10px;
-    background-color: black;
-    color: white;
-    padding: 10px;
-    line-height: 25px;
-    font-size: 13px;
 }
 .artc .reward{
     background-color: #40AADA;
@@ -584,6 +586,8 @@ img{
     padding-left: 20px;
     background: url("../image/login.png") no-repeat 0 -191px;
     height: 16px;
+	display: inline-block;
+	line-height: 16px;
 }
 .artc .comment-section .login-icon a:hover{
     color: #40AADA;
@@ -671,17 +675,19 @@ img{
 .artc .comment-section .comment-content li p span a{
     color: #40AADA;
     padding-left: 20px;
-    background: url("../image/sprites.png") no-repeat 0 -117px;
+    background: url("../image/sprites.png") no-repeat 0 -115px;
     padding-right: 10px;
     font-size: 10px;
     height: 13px;
+	display: inline-block;
+	line-height: 13px;
 }
 .artc .comment-section .comment-content li p span a:hover{
     color: #808080;
     background-image: url("../image/sprites-active.png");
 }
 .artc .comment-section .comment-content li p span .tip{
-    background-position: 0 -189px;
+    background-position: 0 -187px;
 }
 .artc .comment-section .comment-content li p span .transmit{
     background-position: 0 -234px;
