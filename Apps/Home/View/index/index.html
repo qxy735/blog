@@ -127,8 +127,11 @@
 			success:function(result){
 				if(result){
 					$('#article-box').before(result);
+
+					is_repeat_load = 0;
+				}else{
+					$('.load_more').addClass('no_load_more');
 				}
-				is_repeat_load = 0;
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 			},

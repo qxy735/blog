@@ -352,6 +352,16 @@ img{
 	text-align: center;
 	margin: 0 auto;
 }
+.layout .page .no_load_more{
+	background-color: white;
+	color: gray;
+	cursor: not-allowed;
+}
+.layout .page .no_load_more:hover{
+	background-color: white;
+	color: gray;
+	cursor: not-allowed;
+}
 .footer{
 	background-color: #222;
 }
