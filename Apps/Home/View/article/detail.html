@@ -101,15 +101,13 @@
 				</div>
 		        <h2 class="clear">软件推荐</h2>
 		        <div class="hotart">
-		            <p><span class="red">1</span><a href="index.html">putty高级链接软件</a></p>
-		            <p><span class="orange">2</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="pink">3</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="gray">4</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="gray">5</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="gray">6</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="gray">7</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="gray">8</span><a href="index.html">浅谈：html5和html的区别</a></p>
-		            <p><span class="gray">9</span><a href="index.html">浅谈：html5和html的区别</a></p>
+                    <if condition="$softwares">
+                        <foreach name="softwares" item="software" key="index" >
+		                    <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$software['id']}>"><{$software['title']}></a></p>
+                        </foreach>
+                     <else/>
+                        <p>暂无软件推荐!</p>
+                    </if>
 		        </div>
 				<h2 class="clear">友情链接</h2>
 				<div class="tag">

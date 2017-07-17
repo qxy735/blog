@@ -13,7 +13,7 @@ class ArticleController extends BaseController
      */
     public function detail()
     {
-        $article = $hots = $links = [];
+        $article = $hots = $links = $softwares = [];
 
         try {
             // 获取文章 ID
@@ -52,6 +52,17 @@ class ArticleController extends BaseController
 
                 return $hot;
             }, $hots);
+
+            // 获取软件推荐信息
+            $softwares = D()->query('SELECT art.id,art.title FROM `blog_articles` as art INNER JOIN blog_categorys as cat ON art.categoryid = cat.id WHERE art.ispublic = ' . Article::ARTICLE_IS_PUBLIC . ' AND art.`status` = ' . Article::ARTICLE_STATUS_NORMAL . ' AND cat.type = ' . Category::CATEGORY_TYPE_DOWNLOAD . ' order by art.visitcount desc,art.id desc');
+            $softwares = $softwares ? array_values($softwares) : [];
+
+            // 处理文章标题
+            $softwares = array_map(function ($software) {
+                $software['title'] = $this->substr($software['title']);
+
+                return $software;
+            }, $softwares);
         } catch (Exception $e) {
             // 记录错误日志信息
             Log::write($e->getMessage());
@@ -64,6 +75,9 @@ class ArticleController extends BaseController
 
         // 传递文章信息
         $this->assign('article', $article);
+
+        // 卸载空闲变量
+        unset($article);
 
         // 传递友情链接信息
         $this->assign('links', $links);
@@ -82,6 +96,9 @@ class ArticleController extends BaseController
 
         // 传递友情链接显示样式名
         $this->assign('tag_styles', $tag_styles);
+
+        // 传递软件推荐文章信息
+        $this->assign('softwares', $softwares);
 
         // 显示文章详情页面
         $this->display('article/detail');
@@ -177,15 +194,15 @@ class ArticleController extends BaseController
                     $results .= "<img src='{$__IMG__}/article.jpg' />";
                 }
 
-                $results .= "</div><div class='article-content'><h3><a href='article.html'>{$article['title']}</a></h3>";
+                $results .= "</div><div class='article-content'><h3><a href='/article/detail/id/{$article['id']}'>{$article['title']}</a></h3>";
                 $results .= "<p><img src='{$__IMG__}/my-min.jpg' />";
                 $results .= "<i>{$article['author']}</i><span>发布时间: {$article['createtime']}</span>
-			<span>归属: {$article['category']}</span></p><p><a href='article.html'>{$article['content']}</a></p>";
+			<span>归属: {$article['category']}</span></p><p><a href='/article/detail/id/{$article['id']}'>{$article['content']}</a></p>";
                 $results .= "<p class='use'><img src='{$__IMG__}/reviewbg.png' />";
                 $results .= "<span>评论(<b>{$article['visitcount']}</b>)</span>";
                 $results .= "<img src='{$__IMG__}/browsebg.png' />";
                 $results .= "<span>浏览(<b>{$article['commentcount']}</b>)</span>
-			<a href='article.html' class='readall'>阅读全文</a></p></div></div>";
+			<a href='/article/detail/id/{$article['id']}' class='readall'>阅读全文</a></p></div></div>";
             }
 
             echo $results;

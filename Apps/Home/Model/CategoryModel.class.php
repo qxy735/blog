@@ -11,6 +11,10 @@ class CategoryModel extends BaseModel
      */
     const CATEGORY_IS_DISABLED = 0;
     /**
+     * 下载类型
+     */
+    const CATEGORY_TYPE_DOWNLOAD = 1;
+    /**
      * 表字段
      *
      * @var array

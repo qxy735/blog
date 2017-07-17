@@ -82,7 +82,7 @@ class IndexController extends BaseController
                 $article['title'] = $this->substr($article['title']);
 
                 // 处理文章内容
-                $article['content'] = $this->substr($article['content'], 50);
+                $article['content'] = $this->substr(strip_tags($article['content']), 50);
 
                 // 处理发布时间
                 $article['createtime'] = $article['createtime'] ? date('Y-m-d H:i:s', $article['createtime']) : date('Y-m-d H:i:s');
