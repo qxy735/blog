@@ -432,6 +432,8 @@ img{
 .categorycolor{
 	background-color: #40AADA;
 	color: white;
+	padding: 3px 15px;
+	cursor: pointer;
 }
 .big-banner div{
     width: 980px;

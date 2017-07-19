@@ -15,6 +15,18 @@ class CategoryModel extends BaseModel
      */
     const CATEGORY_TYPE_DOWNLOAD = 1;
     /**
+     * 普通文章类型
+     */
+    const CATEGORY_TYPE_NORMAL = 0;
+    /**
+     * 顶级级别
+     */
+    const CATEGORY_LEVEL_TOP = 0;
+    /**
+     * 一级级别
+     */
+    const CATEGORY_LEVEL_ONE = 1;
+    /**
      * 表字段
      *
      * @var array
