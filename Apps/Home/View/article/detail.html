@@ -3,11 +3,13 @@
             <div>
                 <img src="<{$__IMG__}>/location.png"/>
                 <a href="/">首页</a>
+                <if condition="$current_menu">
                 <span>></span>
-                <a href="/tech">技术分享</a>
+                <a href="<{$current_menu['url']}>/m/<{$current_menu['id']}>"><{$current_menu['name']}></a>
+                </if>
                 <if condition="$article">
                 <span>></span>
-                <a href="/article/detail/id/<{$article['id']}>"><{$article['title']}></a>
+                <a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>"><{$article['title']}></a>
                 </if>
             </div>
         </div>

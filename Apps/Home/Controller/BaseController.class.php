@@ -79,6 +79,9 @@ class BaseController extends Controller
 
         // 传递当前请求地址
         $this->assign('__URI__', isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
+
+        // 获取当前导航菜单 ID，默认为首页
+        $this->assign('__MENUID__', intval(I('get.m')));
     }
 
     /**

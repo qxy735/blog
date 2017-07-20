@@ -3,6 +3,7 @@
 use Home\Model\ArticleModel as Article;
 use Home\Model\CategoryModel as Category;
 use Home\Model\LinkModel as Link;
+use Home\Model\MenuModel as Menu;
 use Think\Exception;
 use Think\Log;
 
@@ -13,7 +14,10 @@ class ArticleController extends BaseController
      */
     public function detail()
     {
-        $article = $hots = $links = $softwares = [];
+        // 获取菜单 ID
+        $menu_id = (int)I('get.m');
+
+        $article = $hots = $links = $softwares = $menu = [];
 
         try {
             // 获取文章 ID
@@ -29,6 +33,17 @@ class ArticleController extends BaseController
 
                 $article = $article ? array_values($article) : [];
                 $article = $article ? $article[0] : [];
+            }
+
+            // 获取菜单信息
+            if ($menu_id) {
+                $menu = D('menu')->where([
+                    'id' => $menu_id,
+                    'enabled' => Menu::MENU_IS_ENABLED
+                ])->getField('id,name,url');
+
+                $menu = $menu ? array_values($menu) : [];
+                $menu = $menu ? $menu[0] : [];
             }
 
             // 获取友情链接
@@ -54,7 +69,7 @@ class ArticleController extends BaseController
             }, $hots);
 
             // 获取软件推荐信息
-            $softwares = D()->query('SELECT art.id,art.title FROM `blog_articles` as art INNER JOIN blog_categorys as cat ON art.categoryid = cat.id WHERE art.ispublic = ' . Article::ARTICLE_IS_PUBLIC . ' AND art.`status` = ' . Article::ARTICLE_STATUS_NORMAL . ' AND cat.type = ' . Category::CATEGORY_TYPE_DOWNLOAD . ' order by art.visitcount desc,art.id desc');
+            $softwares = D()->query('SELECT art.id,art.title FROM `blog_articles` as art INNER JOIN blog_categorys as cat ON art.categoryid = cat.id WHERE art.ispublic = ' . Article::ARTICLE_IS_PUBLIC . ' AND art.`status` = ' . Article::ARTICLE_STATUS_NORMAL . ' AND cat.type = ' . Category::CATEGORY_TYPE_DOWNLOAD . ' order by art.visitcount desc,art.id desc limit 9');
             $softwares = $softwares ? array_values($softwares) : [];
 
             // 处理文章标题
@@ -100,6 +115,12 @@ class ArticleController extends BaseController
         // 传递软件推荐文章信息
         $this->assign('softwares', $softwares);
 
+        // 传递菜单信息
+        $this->assign('current_menu', $menu);
+
+        // 传递菜单 ID
+        $this->assign('menu_id', $menu_id);
+
         // 显示文章详情页面
         $this->display('article/detail');
     }
@@ -119,11 +140,28 @@ class ArticleController extends BaseController
             // 计算获取开始位置
             $start = ($page - 1) * $pre_page;
 
-            // 获取文章
-            $articles = D('article')->where([
+            // 获取菜单 ID
+            $menu_id = (int)I('post.menu_id');
+
+            // 获取父分类 ID
+            $parent_id = (int)I('post.parent_id');
+
+            // 获取子分类 ID
+            $son_id = (int)I('post.son_id');
+
+            // 组装查询条件
+            $condition = [
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
                 'status' => Article::ARTICLE_STATUS_NORMAL,
-            ])->order('id desc')->limit($start, $pre_page)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
+            ];
+
+            // 根据菜单  ID 查询
+            if ($menu_id) {
+                $condition['menuid'] = ['in', "0,{$menu_id}"];
+            }
+
+            // 获取文章
+            $articles = D('article')->where($condition)->order('id desc')->limit($start, $pre_page)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
 
             // 判断文章是否存在
             if (!$articles) {

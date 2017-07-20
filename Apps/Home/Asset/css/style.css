@@ -426,8 +426,22 @@ img{
 .category div ul li a{
 	padding: 3px 15px;
 }
+.category div ul li b{
+	padding: 3px 15px;
+	font-weight: normal;
+	cursor: pointer;
+}
+.category div ul li b:hover{
+	color: #40AADA;
+}
+.category div #category_top li .categorycolor:hover{
+	color: white;
+}
 .category div ul li a:hover{
 	color: #40AADA;
+}
+.category div #category_one li .categorycolor:hover{
+	color: white;
 }
 .categorycolor{
 	background-color: #40AADA;

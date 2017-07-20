@@ -2,130 +2,74 @@
 		<div class="location">
 			<div>
 				<img src="<{$__IMG__}>/location.png"/>
-				<a href="tech.html">首页</a>
+				<a href="/">首页</a>
 				<span>></span>
-				<a href="tech.html">技术分享</a>
+				<a href="/tech/article/m/<{$menu_id}>">技术分享</a>
 			</div>
 		</div>
 		<div class="category">
 			<div>
 				<ul id="category_top">
 					<li><span>方向 :</span></li>
-					<li><b class="categorycolor" onclick="change_category(this,'<{$direction[\'id\']}>')">全部</b></li>
+					<li><b <if condition="0 == $parent_id">class="categorycolor"</if> onclick="change_category(this,'<{$direction[\'id\']}>')">全部</b></li>
 					<if condition="$directions">
 						<foreach name="directions" item="direction" key="index" >
-							<li><b onclick="change_category(this,'<{$direction[\'id\']}>')"><{$direction['name']}></b></li>
+							<li><b <if condition="$direction['id'] == $parent_id">class="categorycolor"</if> onclick="change_category(this,'<{$direction[\'id\']}>')"><{$direction['name']}></b></li>
 						</foreach>
 					</if>
 				</ul>
 				<ul id="category_one">
 					<li><span>分类 :</span></li>
-					<li><b class="categorycolor">全部</b></li>
+					<li><a <if condition="0 == $son_id">class="categorycolor"</if> href="/tech/article/m/<{$menu_id}>/pid/<{$parent_id}>/cid/0">全部</a></li>
 					<if condition="$categorys">
 						<foreach name="categorys" item="category" key="index" >
-							<li><a href=""><{$category['name']}></a></li>
+							<li><a <if condition="$category['id'] == $son_id">class="categorycolor"</if> href="/tech/article/m/<{$menu_id}>/pid/<{$parent_id}>/cid/<{$category['id']}>"><{$category['name']}></a></li>
 						</foreach>
 					</if>
 				</ul>
+				<input type="hidden" id="menu_id" value="<{$menu_id}>" />
+				<input type="hidden" id="parent_id" value="<{$parent_id}>" />
+				<input type="hidden" id="son_id" value="<{$son_id}>" />
 			</div>
 		</div>
 		<div class="layout">
 			<div class="layout-left">
 				<h2>技术分享</h2>
-				<div class="article">
-					<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-					<div class="article-content">
-						<h3><a href="">禹译网开心每一天</a></h3>
-						<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-						<p><a href="">前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。</a></p>
-						<p class="use">
-							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-							<a href="tech.html" class="readall">阅读全文</a>
-						</p>
+				<if condition="$articles">
+					<foreach name="articles" item="article" key="index" >
+						<div class="article">
+							<div class="article-img"><if condition="$article['cover']"><img src="<{$article['cover']}>" /><else/><img src="<{$__IMG__}>/article.jpg"/></if></div>
+							<div class="article-content">
+								<h3><a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>"><{$article['title']}></a></h3>
+								<p><img src="<{$__IMG__}>/my-min.jpg" /><i><{$article['author']}></i><span>发布时间: <{$article['createtime']}></span><span>归属: <{$article['category']}></span></p>
+								<p><a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>"><{$article['content']}></a></p>
+								<p class="use">
+									<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b><{$article['visitcount']}></b>)</span>
+									<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b><{$article['commentcount']}></b>)</span>
+									<a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>" class="readall">阅读全文</a>
+								</p>
+							</div>
+						</div>
+					</foreach>
+					<div class="page" id="article-box">
+						<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
 					</div>
-				</div>
-				<div class="article">
-					<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-					<div class="article-content">
-						<h3>禹译网开心每一天</h3>
-						<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-						<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-						<p class="use">
-							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-							<a href="tech.html" class="readall">阅读全文</a>
-						</p>
+				<else/>
+					<div class="article" style="min-height: 870px;">
+						<p align="center">暂无技术分享!</p>
 					</div>
-				</div>
-				<div class="article">
-					<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-					<div class="article-content">
-						<h3>禹译网开心每一天</h3>
-						<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-						<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-						<p class="use">
-							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-							<a href="tech.html" class="readall">阅读全文</a>
-						</p>
-					</div>
-				</div>
-				<div class="article">
-					<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-					<div class="article-content">
-						<h3>禹译网开心每一天</h3>
-						<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-						<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-						<p class="use">
-							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-							<a href="tech.html" class="readall">阅读全文</a>
-						</p>
-					</div>
-				</div>
-				<div class="article">
-					<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-					<div class="article-content">
-						<h3>禹译网开心每一天</h3>
-						<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-						<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-						<p class="use">
-							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-							<a href="tech.html" class="readall">阅读全文</a>
-						</p>
-					</div>
-				</div>
-				<div class="article">
-					<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
-					<div class="article-content">
-						<h3>禹译网开心每一天</h3>
-						<p><img src="<{$__IMG__}>/my-min.jpg"><i>公子禹</i><span>发布时间: 2016-08-15 22:45</span><span>归属: PHP</span></p>
-						<p>前言: 今天,终于能如愿以偿的把博客进行更新改版啦!之前一直有想法把博客进行重新构建,由于种种原因,就一直拖延着。 </p>
-						<p class="use">
-							<img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b>0</b>)</span>
-							<img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b>0</b>)</span>
-							<a href="tech.html" class="readall">阅读全文</a>
-						</p>
-					</div>
-				</div>
-				<div class="page" id="article-box">
-					<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
-				</div>
+				</if>
 			</div>
 			<div class="layout-right">
 				<h2 class="clear">我的作品</h2>
 				<div class="hotart">
-					<p><span class="red">1</span><a href="tech.html">禹译高性能框架</a></p>
-					<p><span class="orange">2</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="pink">3</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="gray">4</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="gray">5</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="gray">6</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="gray">7</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="gray">8</span><a href="tech.html">浅谈：html5和html的区别</a></p>
-					<p><span class="gray">9</span><a href="tech.html">浅谈：html5和html的区别</a></p>
+					<if condition="$works">
+						<foreach name="works" item="work" key="index" >
+							<p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/m/<{$menu_id}>/id/<{$work['id']}>"><{$work['title']}></a></p>
+						</foreach>
+						<else/>
+						<p>暂无作品信息!</p>
+					</if>
 				</div>
 				<h2 class="clear">关注我</h2>
 				<div class="me">
@@ -137,20 +81,67 @@
 				<h2 class="clear">友情链接</h2>
 				<div class="tag">
 					<ul>
-						<li><a href="" class="pink">禹译建站</a></li>
-						<li><a href="" class="blue1">禹译考试网</a></li>
-						<li><a href="" class="orange">禹译微博</a></li>
-						<li><a href="" class="pink">禹译电影网</a></li>
-						<li><a href="" class="orange">禹译微博</a></li>
-						<li><a href="" class="blue1">禹译音乐网</a></li>
+						<if condition="$links">
+							<foreach name="links" item="link" key="index" >
+								<li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
+							</foreach>
+							<else/>
+							<li style="color: black;">暂无友情链接!</li>
+						</if>
 					</ul>
 				</div>
 			</div>
 		</div>
 <include file="./footer" />
 <script>
+	// 初始第一页
+	var init_page = 1;
+
+	// 是否重复加载文章
+	var is_repeat_load = 0;
+
+	// 加载更多网站文章
+	function load_more_article()
+	{
+		if(is_repeat_load){
+			return;
+		}
+
+		is_repeat_load = 1;
+
+		init_page = init_page + 1;
+
+		$.ajax({
+			url:"/article/load_more",
+			data:{
+				page: init_page,
+				menu_id: $('#menu_id').val(),
+				parent_id: $('#parent_id').val(),
+				son_id: $('#son_id').val()
+			},
+			type:'post',
+			cache:false,
+			dataType:'text',
+			async: false,
+			success:function(result){
+				if(result){
+					$('#article-box').before(result);
+
+					is_repeat_load = 0;
+				}else{
+					$('.load_more').addClass('no_load_more');
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+			},
+		});
+	}
+
+	// 获取子分类信息
 	function change_category(obj,category_id)
 	{
+		$('#category_top li b').removeClass('categorycolor');
+
 		$(obj).addClass('categorycolor');
 
 		// 分类 ID
@@ -160,14 +151,15 @@
 		$.ajax({
 			url:"/category/get_son_category",
 			data:{
-				parent_id: category_id
+				parent_id: category_id,
+				menu_id: $('#menu_id').val()
 			},
 			type:'post',
 			cache:false,
 			dataType:'text',
 			async: false,
 			success:function(result){
-				alert(result);
+				$('#category_one').html(result);
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 			},
