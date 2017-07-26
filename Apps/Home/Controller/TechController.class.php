@@ -69,6 +69,19 @@ class TechController extends BaseController
                 $son_category_ids = implode(',', $son_category_ids);
 
                 $condition['categoryid'] = ['in', $son_category_ids];
+            } else {
+                $son_category_ids = D('category')->where([
+                    'type' => Category::CATEGORY_TYPE_NORMAL,
+                    'enabled' => Category::CATEGORY_IS_ENABLED
+                ])->getField('id,level');
+
+                if ($son_category_ids) {
+                    $son_category_ids = implode(',', array_keys($son_category_ids));
+
+                    $condition['categoryid'] = ['in', $son_category_ids];
+                } else {
+                    $condition['id'] = 0;
+                }
             }
 
             $condition['menuid'] = ['in', "0,{$menu_id}"];

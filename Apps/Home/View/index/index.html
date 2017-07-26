@@ -118,7 +118,8 @@
 		$.ajax({
 			url:"/article/load_more",
 			data:{
-				page: init_page
+				page: init_page,
+				category_type: -1
 			},
 			type:'post',
 			cache:false,

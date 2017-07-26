@@ -149,6 +149,9 @@ class ArticleController extends BaseController
             // 获取子分类 ID
             $son_id = (int)I('post.son_id');
 
+            // 获取分类类别
+            $category_type = (int)I('post.category_type');
+
             // 组装查询条件
             $condition = [
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
@@ -158,6 +161,55 @@ class ArticleController extends BaseController
             // 根据菜单  ID 查询
             if ($menu_id) {
                 $condition['menuid'] = ['in', "0,{$menu_id}"];
+            }
+
+            // 根据分类查询
+            if ($son_id) {
+                $condition['categoryid'] = $son_id;
+            } elseif ($parent_id) {
+                $son_category_ids = [$parent_id];
+
+                // 组装一级文章分类查询条件
+                $condition = [
+                    'level' => Category::CATEGORY_LEVEL_ONE,
+                    'enabled' => Category::CATEGORY_IS_ENABLED,
+                    'parentid' => $parent_id
+                ];
+
+                // 获取一级文章分类信息
+                $categorys = D('category')->where($condition)->getField('id,level');
+
+                $categorys = $categorys ? array_keys($categorys) : [];
+
+                $son_category_ids = array_merge($son_category_ids, $categorys);
+
+                unset($categorys);
+
+                $son_category_ids = implode(',', $son_category_ids);
+
+                $condition['categoryid'] = ['in', $son_category_ids];
+            } else {
+                if (-1 != $category_type) {
+                    $category_condition = ['enabled' => Category::CATEGORY_IS_ENABLED];
+
+                    if (Category::CATEGORY_TYPE_NORMAL == $category_type) {
+                        $category_condition['type'] = Category::CATEGORY_TYPE_NORMAL;
+                    } elseif (Category::CATEGORY_TYPE_DOWNLOAD == $category_type) {
+                        $category_condition['type'] = Category::CATEGORY_TYPE_DOWNLOAD;
+                    } elseif (Category::CATEGORY_TYPE_WORK == $category_type) {
+                        $category_condition['type'] = Category::CATEGORY_TYPE_WORK;
+                    }
+
+                    $son_category_ids = D('category')->where($category_condition)->getField('id,level');
+
+                    if ($son_category_ids) {
+                        $son_category_ids = implode(',', array_keys($son_category_ids));
+
+                        $condition['categoryid'] = ['in', $son_category_ids];
+                    } else {
+                        $condition['id'] = 0;
+                    }
+                }
             }
 
             // 获取文章

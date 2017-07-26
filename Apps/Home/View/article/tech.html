@@ -55,7 +55,7 @@
 						<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
 					</div>
 				<else/>
-					<div class="article" style="min-height: 870px;">
+					<div class="article" style="min-height: 580px;">
 						<p align="center">暂无技术分享!</p>
 					</div>
 				</if>
@@ -117,7 +117,8 @@
 				page: init_page,
 				menu_id: $('#menu_id').val(),
 				parent_id: $('#parent_id').val(),
-				son_id: $('#son_id').val()
+				son_id: $('#son_id').val(),
+				category_type: 0
 			},
 			type:'post',
 			cache:false,
