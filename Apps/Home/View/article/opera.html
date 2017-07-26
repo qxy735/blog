@@ -1,0 +1,117 @@
+<include file="./header" />
+<div class="location">
+    <div>
+        <img src="<{$__IMG__}>/location.png"/>
+        <a href="index.html">首页</a>
+        <span>></span>
+        <a href="opera.html">开心剧场</a>
+    </div>
+</div>
+<div class="space"></div>
+<div class="layout">
+    <div class="layout-left">
+        <h2>开心剧场</h2>
+        <if condition="$articles">
+            <foreach name="articles" item="article" key="index" >
+                <div class="article">
+                    <div class="article-img"><if condition="$article['cover']"><img src="<{$article['cover']}>" /><else/><img src="<{$__IMG__}>/article.jpg"/></if></div>
+                    <div class="article-content">
+                        <h3><a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>"><{$article['title']}></a></h3>
+                        <p><img src="<{$__IMG__}>/my-min.jpg" /><i><{$article['author']}></i><span>发布时间: <{$article['createtime']}></span><span>归属: <{$article['category']}></span></p>
+                        <p><a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>"><{$article['content']}></a></p>
+                        <p class="use">
+                            <img src="<{$__IMG__}>/reviewbg.png"/><span>评论(<b><{$article['visitcount']}></b>)</span>
+                            <img src="<{$__IMG__}>/browsebg.png"/><span>浏览(<b><{$article['commentcount']}></b>)</span>
+                            <a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>" class="readall">阅读全文</a>
+                        </p>
+                    </div>
+                </div>
+            </foreach>
+            <div class="page" id="article-box">
+                <a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
+            </div>
+            <else/>
+            <div class="article" style="min-height: 580px;">
+                <p align="center">暂无技术分享!</p>
+            </div>
+        </if>
+        <input type="hidden" id="menu_id" value="<{$menu_id}>" />
+    </div>
+    <div class="layout-right">
+        <h2 class="clear">热门推荐</h2>
+        <div class="hotart">
+            <if condition="$hots">
+                <foreach name="hots" item="hot" key="index" >
+                    <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
+                </foreach>
+                <else/>
+                <p>暂无热门推荐!</p>
+            </if>
+        </div>
+        <h2 class="clear">关注我</h2>
+        <div class="me">
+            <p><span>邮箱订阅:</span><a href="">点我订阅</a></p>
+            <p><span>加入群聊:</span><a href="">立即加入</a></p>
+            <p><span>微信关注:</span>yuyinet(扫码关注)</p>
+            <p><img src="<{$__IMG__}>/platform.jpg"/></p>
+        </div>
+        <h2 class="clear">友情链接</h2>
+        <div class="tag">
+            <ul>
+                <if condition="$links">
+                    <foreach name="links" item="link" key="index" >
+                        <li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
+                    </foreach>
+                    <else/>
+                    <li style="color: black;">暂无友情链接!</li>
+                </if>
+            </ul>
+        </div>
+    </div>
+</div>
+<include file="./footer" />
+<script>
+    // 初始第一页
+    var init_page = 1;
+
+    // 是否重复加载文章
+    var is_repeat_load = 0;
+
+    // 加载更多网站文章
+    function load_more_article()
+    {
+        if(is_repeat_load){
+            return;
+        }
+
+        is_repeat_load = 1;
+
+        init_page = init_page + 1;
+
+        $.ajax({
+            url:"/article/load_more",
+            data:{
+                page: init_page,
+                menu_id: $('#menu_id').val(),
+                category_type: -1
+            },
+            type:'post',
+            cache:false,
+            dataType:'text',
+            async: false,
+            success:function(result){
+                if(result){
+                    $('#article-box').before(result);
+
+                    is_repeat_load = 0;
+                }else{
+                    $('.load_more').addClass('no_load_more');
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            },
+        });
+    }
+</script>
+</body>
+</html>
