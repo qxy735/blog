@@ -1,0 +1,42 @@
+<include file="./header" />
+<div class="location">
+    <div>
+        <img src="<{$__IMG__}>/location.png"/>
+        <a href="index.html">首页</a>
+        <span>></span>
+        <a href="note.html">我的日记</a>
+    </div>
+</div>
+<div class="space"></div>
+<div class="layout">
+    <div class="line">
+        <if condition="$articles">
+            <volist name="articles" id="article">
+                <div class="note">
+                    <span class="line-date"><{$article['createtime']}></span>
+                    <p><{$article['content']}></p>
+                    <ul>
+                        <volist name="article['tags']" id="tag">
+                            <li class="<{$tag_styles[rand(0, 7)]}>"><{$tag}></li>
+                        </volist>
+                    </ul>
+                </div>
+            </volist>
+            <div class="page" id="article-box">
+                <a href="javascript:void(0);" class="load_more" onclick="load_more_note()">加载更多</a>
+            </div>
+        <else/>
+        <div class="note">
+            <span class="line-date"><{$current_date}></span>
+            <p>在这世界上，不管你做得在怎么好，总会有那么50%的人，不会认同你的做法。只有无视他们的存在，才会走得更远。</p>
+            <ul>
+                <li class="orange">空白</li>
+                <li class="gray">话题</li>
+            </ul>
+        </div>
+        </if>
+    </div>
+</div>
+<include file="./footer" />
+</body>
+</html>
