@@ -1,0 +1,61 @@
+<include file="./header" />
+    <div class="location">
+        <div>
+            <img src="<{$__IMG__}>/location.png"/>
+            <a href="/">首页</a>
+            <if condition="$current_menu">
+                <span>></span>
+                <a href="<{$current_menu['url']}>/m/<{$current_menu['id']}>"><{$current_menu['name']}></a>
+            </if>
+        </div>
+    </div>
+    <div class="space"></div>
+	<div class="layout">
+		<div class="layout-left" style="min-height: 100px;">
+            <h2>我的相册</h2>
+            <div class="people album">
+                <if condition="$albums">
+                    <foreach name="albums" item="album" key="index" >
+                        <dl>
+                            <dt><a href="album.html"><if condition="$album['cover']"><img src="<{$album['cover']}>" /><else /><img src="<{$__IMG__}>/article1.jpg" /></if></a></dt>
+                            <dd><a href="album.html"><{$album['name']}></a></dd>
+                        </dl>
+                    </foreach>
+                <else />
+                    暂无相册!
+                </if>
+            </div>
+	        <h2 class="clear">给我留言</h2>
+	        <div class="people">
+				<form method="post" action="">
+					<textarea></textarea>
+					<p><input type="submit" value="留言" class="gonna"/></p>
+				</form>
+	        </div>
+	    </div>
+	    <div class="layout-right">
+	        <h2 class="clear">个人信息</h2>
+	        <div class="me">
+	            <p><span>称号:</span>公子禹、咸鱼、西风之神</p>
+	            <p><span>爱好:</span>网球、旅游、打你</p>
+   	            <p><span>职业:</span>PHP程序猿</p>
+                <p><span>梦想:</span>成为飞天神猿</p>
+	            <p><span>QQ:</span>826740687</p>
+	            <p><span>喜欢的歌手:</span>卓依婷</p>
+                <p><span>喜欢的歌曲:</span>杜十娘</p>
+                <p><span>偶像:</span>没错，就是你</p>
+                <p><span>原则:</span>打你没商量</p>
+	            <p><span>座右铭:</span>花有再开日,人无再少年</p>
+	        </div>
+            <h2 class="clear">关注我</h2>
+            <div class="me">
+                <p><span>邮箱订阅:</span><a href="">点我订阅</a></p>
+                <p><span>加入群聊:</span><a href="">立即加入</a></p>
+                <p><span>微信关注:</span>yuyinet(扫码关注)</p>
+                <p><img src="<{$__IMG__}>/platform.jpg"/></p>
+            </div>
+	    </div>
+	</div>
+<include file="./footer" />
+</body>
+</html>
