@@ -45,7 +45,7 @@ class OperaController extends BaseController
             $condition = [
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
                 'status' => Article::ARTICLE_STATUS_NORMAL,
-                'menuid' => ['in', "0,{$menu_id}"],
+                'menuid' => $menu_id,
             ];
 
             // 获取最新发布的文章

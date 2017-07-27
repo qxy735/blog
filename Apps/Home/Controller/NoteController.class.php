@@ -85,6 +85,9 @@ class NoteController extends BaseController
         // 传递标签显示样式名
         $this->assign('tag_styles', $tag_styles);
 
+        // 传递菜单 ID
+        $this->assign('menu_id', $menu_id);
+
         $this->display('article/note');
     }
 }

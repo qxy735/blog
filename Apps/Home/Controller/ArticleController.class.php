@@ -4,6 +4,7 @@ use Home\Model\ArticleModel as Article;
 use Home\Model\CategoryModel as Category;
 use Home\Model\LinkModel as Link;
 use Home\Model\MenuModel as Menu;
+use Home\Model\TagModel as Tag;
 use Think\Exception;
 use Think\Log;
 
@@ -232,7 +233,7 @@ class ArticleController extends BaseController
                 $article['title'] = $this->substr($article['title']);
 
                 // 处理文章内容
-                $article['content'] = $this->substr($article['content'], 50);
+                $article['content'] = $this->substr(strip_tags($article['content']), 50);
 
                 // 处理发布时间
                 $article['createtime'] = $article['createtime'] ? date('Y-m-d H:i:s', $article['createtime']) : date('Y-m-d H:i:s');
@@ -294,6 +295,106 @@ class ArticleController extends BaseController
                 $results .= "<span>浏览(<b>{$article['commentcount']}</b>)</span>
 			<a href='/article/detail/id/{$article['id']}' class='readall'>阅读全文</a></p></div></div>";
             }
+
+            unset($articles);
+
+            echo $results;
+        } catch (Exception $e) {
+            // 记录错误日志信息
+            Log::write($e->getMessage());
+
+            echo '';
+        }
+    }
+
+    /**
+     * 加载更多我的日记信息
+     */
+    public function load_more_note()
+    {
+        try {
+            // 获取当前页
+            $page = I('post.page', 1);
+
+            // 每页获取 6 条数据
+            $pre_page = 6;
+
+            // 计算获取开始位置
+            $start = ($page - 1) * $pre_page;
+
+            // 获取菜单 ID
+            $menu_id = (int)I('post.menu_id');
+
+            // 组装查询条件
+            $condition = [
+                'ispublic' => Article::ARTICLE_IS_PUBLIC,
+                'status' => Article::ARTICLE_STATUS_NORMAL,
+                'menuid' => $menu_id,
+            ];
+
+            // 获取我的日记
+            $articles = D('article')->where($condition)->order('id desc')->limit($start, $pre_page)->getField('id,content,createtime');
+
+            // 判断文章是否存在
+            if (!$articles) {
+                echo '';
+                exit;
+            }
+
+            $article_ids = [];
+
+            // 处理我的日记发布时间
+            $articles = array_map(function ($article) use (&$article_ids) {
+                // 获取文章 ID
+                $article_ids[] = $article['id'];
+
+                // 处理发布时间
+                $article['createtime'] = $article['createtime'] ? date('Y-m-d', $article['createtime']) : date('Y-m-d');
+
+                return $article;
+            }, $articles);
+
+            // 根据文章 ID 获取对应的文章标签信息
+            if ($article_ids) {
+                $article_ids = implode(',', $article_ids);
+
+                $tags = D()->query("select art_tag.articleid,tag.name from `blog_article_tags` as art_tag LEFT JOIN `blog_tags` as tag ON art_tag.tagid = tag.id WHERE art_tag.articleid in({$article_ids}) AND tag.enabled=" . Tag::TAG_IS_ENABLED);
+            }
+
+            // 获取文章标签信息
+            $articles = array_map(function ($article) use ($tags) {
+                $tag_names = [];
+
+                foreach ($tags as $tag) {
+                    if ($tag['articleid'] == $article['id']) {
+                        $tag_names[] = $tag['name'];
+                    }
+                }
+
+                $article['tags'] = $tag_names;
+
+                return $article;
+            }, $articles);
+
+            unset($article_ids);
+            unset($tags);
+
+            // 标签显示样式名
+            $tag_styles = ['pink', 'blue1', 'orange', 'green', 'blue2', 'yellow', 'blue3', 'red'];
+
+            $results = '';
+
+            // 处理返回形式
+            foreach ($articles as $article) {
+                $results .= "<div class='note'><span class='line-date'>{$article['createtime']}</span>";
+                $results .= "<p>{$article['content']}</p><ul>";
+                foreach ($article['tags'] as $tag) {
+                    $results .= "<li class='{$tag_styles[rand(0, 7)]}'>{$tag}</li>";
+                }
+                $results .= "</ul></div>";
+            }
+
+            unset($articles);
 
             echo $results;
         } catch (Exception $e) {

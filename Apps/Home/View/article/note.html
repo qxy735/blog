@@ -35,8 +35,51 @@
             </ul>
         </div>
         </if>
+        <input type="hidden" id="menu_id" value="<{$menu_id}>" />
     </div>
 </div>
 <include file="./footer" />
+<script>
+    // 初始第一页
+    var init_page = 1;
+
+    // 是否重复加载我的日记
+    var is_repeat_load = 0;
+
+    // 加载更多我的日记
+    function load_more_note()
+    {
+        if(is_repeat_load){
+            return;
+        }
+
+        is_repeat_load = 1;
+
+        init_page = init_page + 1;
+
+        $.ajax({
+            url:"/article/load_more_note",
+            data:{
+                page: init_page,
+                menu_id: $('#menu_id').val()
+            },
+            type:'post',
+            cache:false,
+            dataType:'text',
+            async: false,
+            success:function(result){
+                if(result){
+                    $('#article-box').before(result);
+
+                    is_repeat_load = 0;
+                }else{
+                    $('.load_more').addClass('no_load_more');
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            },
+        });
+    }
+</script>
 </body>
 </html>
