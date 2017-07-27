@@ -2,38 +2,45 @@
 
 use Home\Model\CategoryModel as Category;
 use Home\Model\ArticleModel as Article;
-use Home\Model\LinkModel as Link;
 use Home\Model\MenuModel as Menu;
+use Home\Model\LinkModel as Link;
 use Think\Exception;
 use Think\Log;
 
-class OperaController extends BaseController
+class WorkController extends BaseController
 {
     /**
-     * 显示开心剧场页面
+     * 显示我的作品页面
      */
     public function article()
     {
-        $hots = $links = $articles = $menu = [];
+        $softwares = $links = $articles = $menu = [];
 
         // 获取菜单 ID
         $menu_id = (int)I('get.m');
 
         try {
-            // 获取热门推荐
-            $hots = D('article')->where([
-                'ispublic' => Article::ARTICLE_IS_PUBLIC,
-                'status' => Article::ARTICLE_STATUS_NORMAL,
-            ])->order('visitcount desc,id desc')->limit(9)->getField('id,title,status');
+            // 获取菜单信息
+            if ($menu_id) {
+                $menu = D('menu')->where([
+                    'id' => $menu_id,
+                    'enabled' => Menu::MENU_IS_ENABLED
+                ])->getField('id,name,url');
 
-            $hots = $hots ? array_values($hots) : [];
+                $menu = $menu ? array_values($menu) : [];
+                $menu = $menu ? $menu[0] : [];
+            }
+
+            // 获取软件推荐信息
+            $softwares = D()->query('SELECT art.id,art.title FROM `blog_articles` as art INNER JOIN blog_categorys as cat ON art.categoryid = cat.id WHERE art.ispublic = ' . Article::ARTICLE_IS_PUBLIC . ' AND art.`status` = ' . Article::ARTICLE_STATUS_NORMAL . ' AND cat.type = ' . Category::CATEGORY_TYPE_DOWNLOAD . ' order by art.visitcount desc,art.id desc limit 9');
+            $softwares = $softwares ? array_values($softwares) : [];
 
             // 处理文章标题
-            $hots = array_map(function ($hot) {
-                $hot['title'] = $this->substr($hot['title']);
+            $softwares = array_map(function ($software) {
+                $software['title'] = $this->substr($software['title']);
 
-                return $hot;
-            }, $hots);
+                return $software;
+            }, $softwares);
 
             // 获取友情链接
             $links = D('link')->where([
@@ -96,42 +103,10 @@ class OperaController extends BaseController
 
             // 卸载空闲变量
             unset($article_categorys);
-
-            // 获取菜单信息
-            if ($menu_id) {
-                $menu = D('menu')->where([
-                    'id' => $menu_id,
-                    'enabled' => Menu::MENU_IS_ENABLED
-                ])->getField('id,name,url');
-
-                $menu = $menu ? array_values($menu) : [];
-                $menu = $menu ? $menu[0] : [];
-            }
         } catch (Exception $e) {
             // 记录错误日志信息
             Log::write($e->getMessage());
         }
-
-        // 增加热门推荐显示样式名
-        $hot_styles = ['red', 'orange', 'pink', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray'];
-
-        // 传递热门推荐显示样式名
-        $this->assign('hot_styles', $hot_styles);
-
-        // 传递热门推荐信息
-        $this->assign('hots', $hots);
-
-        // 传递友情链接信息
-        $this->assign('links', $links);
-
-        // 增加标签显示样式名
-        $tag_styles = ['pink', 'blue1', 'orange', 'green', 'blue2', 'yellow', 'blue3', 'red'];
-
-        // 传递标签显示样式名
-        $this->assign('tag_styles', $tag_styles);
-
-        // 传递文章信息
-        $this->assign('articles', $articles);
 
         // 传递菜单信息
         $this->assign('current_menu', $menu);
@@ -139,7 +114,28 @@ class OperaController extends BaseController
         // 传递菜单 ID
         $this->assign('menu_id', $menu_id);
 
-        // 显示开心剧场页面
-        $this->display('article/opera');
+        // 增加热门推荐显示样式名
+        $hot_styles = ['red', 'orange', 'pink', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray'];
+
+        // 传递热门推荐显示样式名
+        $this->assign('hot_styles', $hot_styles);
+
+        // 传递软件推荐文章信息
+        $this->assign('softwares', $softwares);
+
+        // 增加友情链接显示样式名
+        $tag_styles = ['pink', 'blue1', 'orange', 'green', 'blue2', 'yellow', 'blue3', 'red'];
+
+        // 传递友情链接显示样式名
+        $this->assign('tag_styles', $tag_styles);
+
+        // 传递友情链接信息
+        $this->assign('links', $links);
+
+        // 传递文章信息
+        $this->assign('articles', $articles);
+
+        // 显示我的作品页面
+        $this->display('article/work');
     }
 }

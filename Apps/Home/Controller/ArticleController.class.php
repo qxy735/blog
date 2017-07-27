@@ -153,6 +153,9 @@ class ArticleController extends BaseController
             // 获取分类类别
             $category_type = (int)I('post.category_type');
 
+            // 获取是否首页加载
+            $is_index = (int)I('post.is_index');
+
             // 组装查询条件
             $condition = [
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
@@ -161,7 +164,11 @@ class ArticleController extends BaseController
 
             // 根据菜单  ID 查询
             if ($menu_id) {
-                $condition['menuid'] = ['in', "0,{$menu_id}"];
+                if ($is_index) {
+                    $condition['menuid'] = ['in', "0,{$menu_id}"];
+                } else {
+                    $condition['menuid'] = $menu_id;
+                }
             }
 
             // 根据分类查询

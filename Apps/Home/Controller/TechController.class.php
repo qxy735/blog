@@ -3,6 +3,7 @@
 use Home\Model\CategoryModel as Category;
 use Home\Model\ArticleModel as Article;
 use Home\Model\LinkModel as Link;
+use Home\Model\MenuModel as Menu;
 use Think\Exception;
 use Think\Log;
 
@@ -13,7 +14,7 @@ class TechController extends BaseController
      */
     public function article()
     {
-        $directions = $categorys = $articles = $works = $links = [];
+        $directions = $categorys = $articles = $works = $links = $menu = [];
 
         // 获取菜单 ID
         $menu_id = (int)I('get.m');
@@ -84,7 +85,7 @@ class TechController extends BaseController
                 }
             }
 
-            $condition['menuid'] = ['in', "0,{$menu_id}"];
+            $condition['menuid'] = $menu_id;
 
             // 获取最新发布的文章
             $articles = D('article')->where($condition)
@@ -151,6 +152,17 @@ class TechController extends BaseController
             ])->order('displayorder desc,id desc')->limit(6)->getField('id,name,url');
 
             $links = $links ?: [];
+
+            // 获取菜单信息
+            if ($menu_id) {
+                $menu = D('menu')->where([
+                    'id' => $menu_id,
+                    'enabled' => Menu::MENU_IS_ENABLED
+                ])->getField('id,name,url');
+
+                $menu = $menu ? array_values($menu) : [];
+                $menu = $menu ? $menu[0] : [];
+            }
         } catch (Exception $e) {
             // 记录错误日志信息
             Log::write($e->getMessage());
@@ -164,6 +176,9 @@ class TechController extends BaseController
 
         // 传递文章信息
         $this->assign('articles', $articles);
+
+        // 传递菜单信息
+        $this->assign('current_menu', $menu);
 
         // 传递菜单 ID
         $this->assign('menu_id', $menu_id);

@@ -3,8 +3,10 @@
 			<div>
 				<img src="<{$__IMG__}>/location.png"/>
 				<a href="/">首页</a>
-				<span>></span>
-				<a href="/tech/article/m/<{$menu_id}>">技术分享</a>
+				<if condition="$current_menu">
+					<span>></span>
+					<a href="<{$current_menu['url']}>/m/<{$current_menu['id']}>"><{$current_menu['name']}></a>
+				</if>
 			</div>
 		</div>
 		<div class="category">

@@ -2,6 +2,7 @@
 
 use Home\Model\ArticleModel as Article;
 use Home\Model\TagModel as Tag;
+use Home\Model\MenuModel as Menu;
 use Think\Exception;
 use Think\Log;
 
@@ -12,12 +13,12 @@ class NoteController extends BaseController
      */
     public function article()
     {
-        $articles = $article_ids = $tags = [];
+        $articles = $article_ids = $tags = $menu = [];
+
+        // 获取菜单 ID
+        $menu_id = (int)I('get.m');
 
         try {
-            // 获取菜单 ID
-            $menu_id = (int)I('get.m');
-
             // 组装文章查询条件
             $condition = [
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
@@ -68,6 +69,17 @@ class NoteController extends BaseController
 
             unset($article_ids);
             unset($tags);
+
+            // 获取菜单信息
+            if ($menu_id) {
+                $menu = D('menu')->where([
+                    'id' => $menu_id,
+                    'enabled' => Menu::MENU_IS_ENABLED
+                ])->getField('id,name,url');
+
+                $menu = $menu ? array_values($menu) : [];
+                $menu = $menu ? $menu[0] : [];
+            }
         } catch (Exception $e) {
             // 记录错误日志信息
             Log::write($e->getMessage());
@@ -84,6 +96,9 @@ class NoteController extends BaseController
 
         // 传递标签显示样式名
         $this->assign('tag_styles', $tag_styles);
+
+        // 传递菜单信息
+        $this->assign('current_menu', $menu);
 
         // 传递菜单 ID
         $this->assign('menu_id', $menu_id);
