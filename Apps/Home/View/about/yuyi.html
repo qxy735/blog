@@ -17,8 +17,13 @@
                 <if condition="$albums">
                     <foreach name="albums" item="album" key="index" >
                         <dl>
-                            <dt><a href="album.html"><if condition="$album['cover']"><img src="<{$album['cover']}>" /><else /><img src="<{$__IMG__}>/article1.jpg" /></if></a></dt>
-                            <dd><a href="album.html"><{$album['name']}></a></dd>
+                            <if condition="$album['photos']">
+                                <dt><a href="/about/album/m/<{$menu_id}>/id/<{$album['id']}>"><if condition="$album['cover']"><img src="<{$album['cover']}>" /><else /><img src="<{$__IMG__}>/article1.jpg" /></if></a></dt>
+                                <dd><a href="/about/album/m/<{$menu_id}>/id/<{$album['id']}>"><{$album['name']}>(<{$album['photos']}>)</a></dd>
+                            <else />
+                                <dt><if condition="$album['cover']"><img src="<{$album['cover']}>" /><else /><img src="<{$__IMG__}>/article1.jpg" /></if></dt>
+                                <dd><{$album['name']}>(<{$album['photos']}>)</dd>
+                            </if>
                         </dl>
                     </foreach>
                 <else />

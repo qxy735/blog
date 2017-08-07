@@ -1,0 +1,103 @@
+<include file="./header" />
+<div class="location">
+    <div>
+        <img src="<{$__IMG__}>/location.png"/>
+        <a href="index.html">首页</a>
+        <if condition="$current_menu">
+            <span>></span>
+            <a href="<{$current_menu['url']}>/m/<{$current_menu['id']}>"><{$current_menu['name']}></a>
+        </if>
+        <if condition="$album">
+            <span>></span>
+            <a href="/about/album/m/<{$menu_id}>/id/<{$album['id']}>"><{$album['name']}></a>
+        </if>
+    </div>
+</div>
+<div class="space"></div>
+<div class="layout">
+    <div class="layout-left" style="min-height: 100px;">
+        <if condition="$album">
+            <h2><{$album['name']}></h2>
+        </if>
+        <div class="people album">
+            <if condition="$photos">
+                <foreach name="photos" item="photo" key="index" >
+                    <dl>
+                        <dt><a href="javascript:void(0);"><img <if condition="$photo['url']" > src="<{$photo['url']}>"<else />src="<{$__IMG__}>/article1.jpg"</if>></a></dt>
+                        <dd><a href="javascript:void(0);"><{$photo['name']}></a></dd>
+                    </dl>
+                </foreach>
+                <div class="page" id="article-box">
+                    <a href="javascript:void(0);" class="load_more" onclick="load_more_photo()">加载更多</a>
+                </div>
+            <else />
+                暂无照片!
+            </if>
+        </div>
+        <input type="hidden" id="album_id" value="<{$album_id}>" />
+    </div>
+    <div class="layout-right">
+        <h2 class="clear">热门推荐</h2>
+        <div class="hotart">
+            <if condition="$hots">
+                <foreach name="hots" item="hot" key="index" >
+                    <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
+                </foreach>
+            <else/>
+                <p>暂无热门推荐!</p>
+            </if>
+        </div>
+        <h2 class="clear">关注我</h2>
+        <div class="me">
+            <p><span>邮箱订阅:</span><a href="">点我订阅</a></p>
+            <p><span>加入群聊:</span><a href="">立即加入</a></p>
+            <p><span>微信关注:</span>yuyinet(扫码关注)</p>
+            <p><img src="<{$__IMG__}>/platform.jpg"/></p>
+        </div>
+    </div>
+</div>
+<include file="./footer" />
+<script>
+    // 初始第一页
+    var init_page = 1;
+
+    // 是否重复加载照片
+    var is_repeat_load = 0;
+
+    // 加载更多照片信息
+    function load_more_photo()
+    {
+        if(is_repeat_load){
+            return;
+        }
+
+        is_repeat_load = 1;
+
+        init_page = init_page + 1;
+
+        $.ajax({
+            url:"/photo/load_more",
+            data:{
+                page: init_page,
+                album_id: $('#album_id').val()
+            },
+            type:'post',
+            cache:false,
+            dataType:'text',
+            async: false,
+            success:function(result){
+                if(result){
+                    $('#article-box').before(result);
+
+                    is_repeat_load = 0;
+                }else{
+                    $('.load_more').addClass('no_load_more');
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            },
+        });
+    }
+</script>
+</body>
+</html>
