@@ -162,6 +162,20 @@ class ArticleController extends BaseController
                 'status' => Article::ARTICLE_STATUS_NORMAL,
             ];
 
+            // 获取查询关键字
+            $keyword = I('post.keyword');
+
+            // 获取是否查询关键字
+            $is_search = (int)I('post.is_search');
+
+            if ($is_search) {
+                if (!$keyword) {
+                    return '';
+                }
+
+                $condition['_string'] = "title like '%{$keyword}%' or content like '%{$keyword}%'";
+            }
+
             // 根据菜单  ID 查询
             if ($menu_id) {
                 if ($is_index) {
@@ -410,5 +424,120 @@ class ArticleController extends BaseController
 
             echo '';
         }
+    }
+
+    /**
+     * 检索文章
+     */
+    public function search()
+    {
+        $articles = $links = $softwares = [];
+
+        // 获取搜索关键字
+        $keyword = I('post.keyword');
+
+        try {
+            if ($keyword) {
+                // 组装查询条件
+                $condition = [
+                    'ispublic' => Article::ARTICLE_IS_PUBLIC,
+                    'status' => Article::ARTICLE_STATUS_NORMAL,
+                    '_string' => "title like '%{$keyword}%' or content like '%{$keyword}%'",
+                ];
+
+                // 获取文章
+                $articles = D('article')->where($condition)->order('id desc')->limit(6)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
+
+                $articles = $articles ?: [];
+
+                $category_ids = $categorys = [];
+
+                // 处理最新发布的文章内容和标题
+                $articles = array_map(function ($article) use (&$category_ids) {
+                    // 获取文章分类 ID
+                    $category_ids[] = $article['categoryid'];
+
+                    // 处理文章标题
+                    $article['title'] = $this->substr($article['title']);
+
+                    // 处理文章内容
+                    $article['content'] = $this->substr(strip_tags($article['content']), 50);
+
+                    // 处理发布时间
+                    $article['createtime'] = $article['createtime'] ? date('Y-m-d H:i:s', $article['createtime']) : date('Y-m-d H:i:s');
+
+                    // 处理文章作者
+                    $article['author'] = $article['author'] ?: '公子禹';
+
+                    return $article;
+                }, $articles);
+
+                // 去除重复分类 ID
+                $category_ids = $category_ids ? array_unique($category_ids) : [];
+
+                // 获取分类名
+                if ($category_ids) {
+                    $categorys = D('category')->where('id in(' . implode(',', $category_ids) . ') and enabled=' . Category::CATEGORY_IS_ENABLED)->getField('id,name');
+                }
+
+                // 获取文章所属分类名
+                $articles = array_map(function ($article) use ($categorys) {
+                    $article['category'] = isset($categorys[$article['categoryid']]) ? $categorys[$article['categoryid']] : '禹译';
+
+                    return $article;
+                }, $articles);
+
+                // 卸载空闲变量
+                unset($categorys);
+            }
+
+            // 获取友情链接
+            $links = D('link')->where([
+                'enabled' => Link::LINK_IS_ENABLED,
+            ])->order('displayorder desc,id desc')->limit(6)->getField('id,name,url');
+
+            $links = $links ?: [];
+
+            // 获取软件推荐信息
+            $softwares = D()->query('SELECT art.id,art.title FROM `blog_articles` as art INNER JOIN blog_categorys as cat ON art.categoryid = cat.id WHERE art.ispublic = ' . Article::ARTICLE_IS_PUBLIC . ' AND art.`status` = ' . Article::ARTICLE_STATUS_NORMAL . ' AND cat.type = ' . Category::CATEGORY_TYPE_DOWNLOAD . ' order by art.visitcount desc,art.id desc limit 9');
+            $softwares = $softwares ? array_values($softwares) : [];
+
+            // 处理文章标题
+            $softwares = array_map(function ($software) {
+                $software['title'] = $this->substr($software['title']);
+
+                return $software;
+            }, $softwares);
+        } catch (Exception $e) {
+            // 记录错误日志信息
+            Log::write($e);
+        }
+
+        // 传递搜索到的文章内容
+        $this->assign('articles', $articles);
+
+        // 传递查询关键字
+        $this->assign('keyword', $keyword);
+
+        // 增加友情链接显示样式名
+        $tag_styles = ['pink', 'blue1', 'orange', 'green', 'blue2', 'yellow', 'blue3', 'red'];
+
+        // 传递友情链接显示样式名
+        $this->assign('tag_styles', $tag_styles);
+
+        // 传递友情链接信息
+        $this->assign('links', $links);
+
+        // 增加热门推荐显示样式名
+        $hot_styles = ['red', 'orange', 'pink', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray'];
+
+        // 传递热门推荐显示样式名
+        $this->assign('hot_styles', $hot_styles);
+
+        // 传递软件推荐文章信息
+        $this->assign('softwares', $softwares);
+
+        // 加载文章搜索页面
+        $this->display('article/search');
     }
 }

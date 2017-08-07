@@ -18,6 +18,9 @@
 					</div>
 				</div>
 			</foreach>
+			<div class="page" id="article-box">
+				<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
+			</div>
 		<else/>
 			<div class="article">
 				<div class="article-img"><img src="<{$__IMG__}>/article.jpg"/></div>
@@ -28,9 +31,6 @@
 				</div>
 			</div>
 		</if>
-		<div class="page" id="article-box">
-			<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
-		</div>
 	</div>
 	<div class="layout-right">
 		<h2>禹译公告</h2>
@@ -49,8 +49,8 @@
 		</div>
 		<h2 class="clear">站内搜索</h2>
 		<div class="search">
-			<form action="search.html" method="post">
-				<input type="text"/><button onclick="alert('该功能正在开发中!');return false;"></button>
+			<form action="/article/search" method="post">
+				<input type="text" name="keyword" value="" /><input type="submit" value="" class="search-button" />
 			</form>
 		</div>
 		<h2 class="clear">标签云</h2>

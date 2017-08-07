@@ -210,7 +210,7 @@ img{
 	background-color: white;
 	outline: none;
 }
-.layout .layout-right .search button{
+.layout .layout-right .search .search-button{
 	width: 40px;
 	height: 32px;
 	color: white;
