@@ -136,7 +136,7 @@ class ArticleController extends BaseController
             $page = I('post.page', 1);
 
             // 每页获取 6 条数据
-            $pre_page = 6;
+            $pre_page = 1;
 
             // 计算获取开始位置
             $start = ($page - 1) * $pre_page;
@@ -296,6 +296,13 @@ class ArticleController extends BaseController
 
             $__IMG__ = "{$asset_path}/image";
 
+            $target = '';
+
+            // 定义链接打开方式
+            if ($is_search) {
+                $target = 'target="_blank"';
+            }
+
             // 处理返回形式
             foreach ($articles as $article) {
                 $results .= "<div class='article'><div class='article-img'>";
@@ -306,15 +313,15 @@ class ArticleController extends BaseController
                     $results .= "<img src='{$__IMG__}/article.jpg' />";
                 }
 
-                $results .= "</div><div class='article-content'><h3><a href='/article/detail/id/{$article['id']}'>{$article['title']}</a></h3>";
+                $results .= "</div><div class='article-content'><h3><a href='/article/detail/id/{$article['id']}' {$target}>{$article['title']}</a></h3>";
                 $results .= "<p><img src='{$__IMG__}/my-min.jpg' />";
                 $results .= "<i>{$article['author']}</i><span>发布时间: {$article['createtime']}</span>
-			<span>归属: {$article['category']}</span></p><p><a href='/article/detail/id/{$article['id']}'>{$article['content']}</a></p>";
+			<span>归属: {$article['category']}</span></p><p><a href='/article/detail/id/{$article['id']}' {$target}>{$article['content']}</a></p>";
                 $results .= "<p class='use'><img src='{$__IMG__}/reviewbg.png' />";
                 $results .= "<span>评论(<b>{$article['visitcount']}</b>)</span>";
                 $results .= "<img src='{$__IMG__}/browsebg.png' />";
                 $results .= "<span>浏览(<b>{$article['commentcount']}</b>)</span>
-			<a href='/article/detail/id/{$article['id']}' class='readall'>阅读全文</a></p></div></div>";
+			<a href='/article/detail/id/{$article['id']}' {$target} class='readall'>阅读全文</a></p></div></div>";
             }
 
             unset($articles);
@@ -446,7 +453,7 @@ class ArticleController extends BaseController
                 ];
 
                 // 获取文章
-                $articles = D('article')->where($condition)->order('id desc')->limit(6)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
+                $articles = D('article')->where($condition)->order('id desc')->limit(1)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
 
                 $articles = $articles ?: [];
 
