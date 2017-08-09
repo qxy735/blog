@@ -136,7 +136,7 @@ class ArticleController extends BaseController
             $page = I('post.page', 1);
 
             // 每页获取 6 条数据
-            $pre_page = 1;
+            $pre_page = 6;
 
             // 计算获取开始位置
             $start = ($page - 1) * $pre_page;
@@ -156,6 +156,9 @@ class ArticleController extends BaseController
             // 获取是否首页加载
             $is_index = (int)I('post.is_index');
 
+            // 获取标签 ID
+            $tag_id = (int)I('post.tag');
+
             // 组装查询条件
             $condition = [
                 'ispublic' => Article::ARTICLE_IS_PUBLIC,
@@ -169,11 +172,33 @@ class ArticleController extends BaseController
             $is_search = (int)I('post.is_search');
 
             if ($is_search) {
-                if (!$keyword) {
+                if (!$keyword && !$tag_id) {
                     return '';
                 }
 
-                $condition['_string'] = "title like '%{$keyword}%' or content like '%{$keyword}%'";
+                if ($keyword) {
+                    $condition['_string'] = "title like '%{$keyword}%' or content like '%{$keyword}%'";
+                }
+
+                // 根据标签 ID 查询
+                if ($tag_id) {
+                    $article_tags = D('articleTag')->where(['tagid' => $tag_id])->getField('id,articleid,tagid');
+                    $article_tags = $article_tags ? array_values($article_tags) : [];
+
+                    $article_ids = [];
+
+                    foreach ($article_tags as $article_tag) {
+                        $article_ids[] = $article_tag['articleid'];
+                    }
+
+                    $article_ids = $article_ids ? array_unique($article_ids) : [0];
+                    $article_ids = implode(',', $article_ids);
+
+                    $condition['id'] = ['in', $article_ids];
+
+                    unset($article_tags);
+                    unset($article_ids);
+                }
             }
 
             // 根据菜单  ID 查询
@@ -443,17 +468,43 @@ class ArticleController extends BaseController
         // 获取搜索关键字
         $keyword = I('post.keyword');
 
+        // 获取标签 ID
+        $tag_id = (int)I('get.tag');
+
         try {
-            if ($keyword) {
+            if ($keyword || $tag_id) {
                 // 组装查询条件
                 $condition = [
                     'ispublic' => Article::ARTICLE_IS_PUBLIC,
                     'status' => Article::ARTICLE_STATUS_NORMAL,
-                    '_string' => "title like '%{$keyword}%' or content like '%{$keyword}%'",
                 ];
 
+                if ($keyword) {
+                    $condition['_string'] = "title like '%{$keyword}%' or content like '%{$keyword}%'";
+                }
+
+                if ($tag_id) {
+                    // 根据标签 ID 获取文章 ID
+                    $article_tags = D('articleTag')->where(['tagid' => $tag_id])->getField('id,articleid,tagid');
+                    $article_tags = $article_tags ? array_values($article_tags) : [];
+
+                    $article_ids = [];
+
+                    foreach ($article_tags as $article_tag) {
+                        $article_ids[] = $article_tag['articleid'];
+                    }
+
+                    $article_ids = $article_ids ? array_unique($article_ids) : [0];
+                    $article_ids = implode(',', $article_ids);
+
+                    $condition['id'] = ['in', $article_ids];
+
+                    unset($article_tags);
+                    unset($article_ids);
+                }
+
                 // 获取文章
-                $articles = D('article')->where($condition)->order('id desc')->limit(1)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
+                $articles = D('article')->where($condition)->order('id desc')->limit(6)->getField('id,title,cover,categoryid,author,content,visitcount,commentcount,createtime');
 
                 $articles = $articles ?: [];
 
@@ -543,6 +594,9 @@ class ArticleController extends BaseController
 
         // 传递软件推荐文章信息
         $this->assign('softwares', $softwares);
+
+        // 传递标签 ID
+        $this->assign('tag_id', $tag_id);
 
         // 加载文章搜索页面
         $this->display('article/search');

@@ -31,12 +31,13 @@
 						<a href="javascript:void(0);" class="load_more" onclick="load_more_article()">加载更多</a>
 					</div>
 					<else/>
-					<div class="article">
-						<p style="text-align: center;">暂无搜索结果!</p>
+					<div class="article" style="height: auto;">
+						<p class="no-data"><img src="<{$__IMG__}>/no-article.png"></p>
 					</div>
 					</if>
 			</div>
 			<input type="hidden" value="<{$keyword}>" id="keyword" />
+			<input type="hidden" value="<{$tag_id}>" id="tag_id" />
 			<div class="layout-right">
 				<h2>站内搜索</h2>
 				<div class="search">
@@ -51,7 +52,7 @@
 							<p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$software['id']}>"><{$software['title']}></a></p>
 						</foreach>
 						<else/>
-						<p>暂无软件推荐!</p>
+						<p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
 					</if>
 		        </div>
 				<h2 class="clear">关注我</h2>
@@ -69,7 +70,7 @@
 								<li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
 							</foreach>
 							<else/>
-							<li style="color: black;">暂无友情链接!</li>
+							<p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
 						</if>
 					</ul>
 				</div>
@@ -100,6 +101,7 @@
 				page: init_page,
 				category_type: -1,
 				keyword: $('#keyword').val(),
+				tag: $('#tag_id').val(),
 				is_search: 1
 			},
 			type:'post',

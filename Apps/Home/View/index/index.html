@@ -58,7 +58,7 @@
 			<ul>
 				<if condition="$tags">
 				<foreach name="tags" item="tag" key="index" >
-					<li><a href="" class="<{$tag_styles[$index-1]}>"><{$tag['name']}></a></li>
+					<li><a href="/article/search/tag/<{$tag['id']}>" class="<{$tag_styles[$index-1]}>"><{$tag['name']}></a></li>
 				</foreach>
 				<else/>
 					<li class="no-data"><img src="<{$__IMG__}>/no-data.png"></li>
