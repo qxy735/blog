@@ -17,4 +17,5 @@ return array(
     'DB_CHARSET'   =>  'utf8',
     'LOG_RECORD' => true,
     'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR,WARN',
+    'TMPL_EXCEPTION_FILE' => './Apps/Home/View/404.html',
 );
