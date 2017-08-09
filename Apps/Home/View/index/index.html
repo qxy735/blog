@@ -41,7 +41,7 @@
 				<if condition="0==$index">  class="red"
 				<elseif condition="1 == $index"/> class="orange"
 				<else /> class="pink"
-				</if>><{$index + 1}></span><a href="index.html"><{$notice['title']}></a></p>
+				</if>><{$index + 1}></span><a href="/notice?id=<{$notice['id']}>"><{$notice['title']}></a></p>
 			</foreach>
 			<else/>
 				<p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>

@@ -1,0 +1,35 @@
+<include file="./header" />
+<div class="layout">
+    <div class="location">
+        <div>
+            <img src="<{$__IMG__}>/location.png"/>
+            <a href="/">首页</a>
+            <span>></span>
+            <span>公告信息</span>
+            <span>></span>
+            <if condition="$notice">
+                <a href="/notice?id=<{$notice['id']}>"><{$notice['title']}></a>
+            <else />
+                <span>无公告</span>
+            </if>
+        </div>
+    </div>
+    <div class="notice">
+        <if condition="$notice">
+            <h3><{$notice['title']}></h3>
+            <p class="no-data"><span>时间：</span><{$notice['lastoperate']}><span style="margin-left: 20px;">发布人：</span><{$notice['sendname']}></p>
+            <div id="notice-content"><{$notice['content']}></div>
+        <else />
+            <p class="no-data"><img src="<{$__IMG__}>/no-article.png"></p>
+        </if>
+    </div>
+</div>
+<include file="./footer" />
+<script src="<{$__ASSET__}>/library/ueditor/ueditor.parse.js"></script>
+<script type="text/javascript">
+    uParse('#notice-content', {
+        rootPath: '<{$__ASSET__}>/library/ueditor'
+    })
+</script>
+</body>
+</html>
