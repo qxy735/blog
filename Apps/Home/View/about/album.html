@@ -10,6 +10,9 @@
         <if condition="$album">
             <span>></span>
             <a href="/about/album/m/<{$menu_id}>/id/<{$album['id']}>"><{$album['name']}></a>
+        <else/>
+            <span>></span>
+            <span>无相片</span>
         </if>
     </div>
 </div>
@@ -31,7 +34,7 @@
                     <a href="javascript:void(0);" class="load_more" onclick="load_more_photo()">加载更多</a>
                 </div>
             <else />
-                暂无照片!
+                <p class="no-data" style="width: auto;text-align: center;"><img src="<{$__IMG__}>/no-article.png"></p>
             </if>
         </div>
         <input type="hidden" id="album_id" value="<{$album_id}>" />
@@ -44,7 +47,7 @@
                     <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
                 </foreach>
             <else/>
-                <p>暂无热门推荐!</p>
+                <p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
             </if>
         </div>
         <h2 class="clear">关注我</h2>

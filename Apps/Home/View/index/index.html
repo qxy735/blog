@@ -44,7 +44,7 @@
 				</if>><{$index + 1}></span><a href="index.html"><{$notice['title']}></a></p>
 			</foreach>
 			<else/>
-				<p>暂无公告!</p>
+				<p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
 			</if>
 		</div>
 		<h2 class="clear">站内搜索</h2>
@@ -61,7 +61,7 @@
 					<li><a href="" class="<{$tag_styles[$index-1]}>"><{$tag['name']}></a></li>
 				</foreach>
 				<else/>
-					<li style="color: black;">暂无标签!</li>
+					<li class="no-data"><img src="<{$__IMG__}>/no-data.png"></li>
 				</if>
 			</ul>
 		</div>
@@ -72,7 +72,7 @@
 					<p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
 				</foreach>
 			<else/>
-				<p>暂无热门推荐!</p>
+				<p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
 			</if>
 		</div>
 		<h2 class="clear">关注我</h2>
@@ -90,7 +90,7 @@
 						<li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
 					</foreach>
 				<else/>
-					<li style="color: black;">暂无友情链接!</li>
+					<li class="no-data"><img src="<{$__IMG__}>/no-data.png"></li>
 				</if>
 			</ul>
 		</div>

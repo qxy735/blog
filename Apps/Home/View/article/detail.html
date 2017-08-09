@@ -10,6 +10,9 @@
                 <if condition="$article">
                 <span>></span>
                 <a href="/article/detail/m/<{$menu_id}>/id/<{$article['id']}>"><{$article['title']}></a>
+                <else/>
+                    <span>></span>
+                    <span>无文章</span>
                 </if>
             </div>
         </div>
@@ -33,7 +36,7 @@
                         <img src="<{$__IMG__}>/weixin-pay.png"/>
                     </p>
                 </div>
-                <div class="comment-section">
+                <div class="comment-section" style="display: none;">
                     <p class="login-icon">社交帐号登录:
                         <a href="">QQ</a>
                         <a href="" class="weixin-icon">微信</a>
@@ -87,7 +90,7 @@
                     </ul>
                 </div>
                 <else/>
-                    <p class="no-article">该文章不存在!</p>
+                    <p class="no-data" style="width: auto;text-align: center;margin-top: 20px;"><img src="<{$__IMG__}>/no-article.png"></p>
                 </if>
 			</div>
 			<div class="layout-right">
@@ -98,7 +101,7 @@
                             <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$hot['id']}>"><{$hot['title']}></a></p>
                         </foreach>
                         <else/>
-                        <p>暂无热门推荐!</p>
+                        <p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
                     </if>
 				</div>
 		        <h2 class="clear">软件推荐</h2>
@@ -108,7 +111,7 @@
 		                    <p><span class="<{$hot_styles[$index]}>"><{$index+1}></span><a href="/article/detail/id/<{$software['id']}>"><{$software['title']}></a></p>
                         </foreach>
                      <else/>
-                        <p>暂无软件推荐!</p>
+                        <p class="no-data"><img src="<{$__IMG__}>/no-data.png"></p>
                     </if>
 		        </div>
 				<h2 class="clear">友情链接</h2>
@@ -119,7 +122,7 @@
                                 <li><a href="<{$link['url']}>" class="<{$tag_styles[$index-1]}>" target="_blank"><{$link['name']}></a></li>
                             </foreach>
                             <else/>
-                            <li style="color: black;">暂无友情链接!</li>
+                            <li class="no-data"><img src="<{$__IMG__}>/no-data.png"></li>
                         </if>
 					</ul>
 				</div>

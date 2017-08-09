@@ -131,7 +131,7 @@ class OperaController extends BaseController
         $this->assign('tag_styles', $tag_styles);
 
         // 传递文章信息
-        $this->assign('articles', $articles);
+        $this->assign('articles', []);
 
         // 传递菜单信息
         $this->assign('current_menu', $menu);

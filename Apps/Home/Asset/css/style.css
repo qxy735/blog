@@ -122,6 +122,11 @@ img{
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
     overflow: hidden;
 }
+.layout .article .no-data{
+	width: auto;
+	margin: 20px 0;
+	text-align: center;
+}
 .layout .article .article-img{
 	width: 215px;
 	overflow: hidden;
@@ -276,6 +281,9 @@ img{
 .layout .layout-right .hotart p{
 	height: 30px;
 	line-height: 30px;
+}
+.layout .layout-right .hotart p.no-data{
+	height: auto;
 }
 .layout .layout-right .hotart p span{
 	margin-right: 10px;
@@ -736,4 +744,8 @@ img{
 }
 .space{
     height: 20px;
+}
+.no-data{
+	width: 250px;
+	text-align: center;
 }
