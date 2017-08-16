@@ -354,9 +354,9 @@ class ArticleController extends BaseController
                 $results .= "<i>{$article['author']}</i><span>发布时间: {$article['createtime']}</span>
 			<span>归属: {$article['category']}</span></p><p><a href='/article/detail/id/{$article['id']}' {$target}>{$article['content']}</a></p>";
                 $results .= "<p class='use'><img src='{$__IMG__}/reviewbg.png' />";
-                $results .= "<span>评论(<b>{$article['visitcount']}</b>)</span>";
+                $results .= "<span>评论(<b>{$article['commentcount']}</b>)</span>";
                 $results .= "<img src='{$__IMG__}/browsebg.png' />";
-                $results .= "<span>浏览(<b>{$article['commentcount']}</b>)</span>
+                $results .= "<span>浏览(<b>{$article['visitcount']}</b>)</span>
 			<a href='/article/detail/id/{$article['id']}' {$target} class='readall'>阅读全文</a></p></div></div>";
             }
 
