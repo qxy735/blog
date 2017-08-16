@@ -181,6 +181,9 @@
     }
     $(function () {
         $("#good").click(function () {
+            $('#title_good_count').text(parseInt($('#title_good_count').text()) + 1);
+            $('#good_count').text(parseInt($('#good_count').text()) + 1);
+
             $.tipsBox({
                 obj: $(this),
                 str: "+1",
@@ -195,12 +198,14 @@
                         dataType:'json',
                         async: false,
                         success:function(result){
-                            if(result.success == true){
-                                $('#title_good_count').text(parseInt($('#title_good_count').text()) + 1);
-                                $('#good_count').text(parseInt($('#good_count').text()) + 1);
+                            if(result.success == false){
+                                $('#title_good_count').text(parseInt($('#title_good_count').text()) - 1);
+                                $('#good_count').text(parseInt($('#good_count').text()) - 1);
                             }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            $('#title_good_count').text(parseInt($('#title_good_count').text()) - 1);
+                            $('#good_count').text(parseInt($('#good_count').text()) - 1);
                         },
                     });
                 }
@@ -208,6 +213,8 @@
             niceIn($(this));
         });
         $("#bad").click(function () {
+            $('#bad_count').text(parseInt($('#bad_count').text()) + 1);
+
             $.tipsBox({
                 obj: $(this),
                 str: "+1",
@@ -223,11 +230,12 @@
                         dataType:'json',
                         async: false,
                         success:function(result){
-                            if(result.success == true){
-                                $('#bad_count').text(parseInt($('#bad_count').text()) + 1);
+                            if(result.success == false){
+                                $('#bad_count').text(parseInt($('#bad_count').text()) - 1);
                             }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            $('#bad_count').text(parseInt($('#bad_count').text()) - 1);
                         },
                     });
                 }
