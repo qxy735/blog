@@ -30,10 +30,21 @@ class ArticleController extends BaseController
                     'id' => $id,
                     'ispublic' => Article::ARTICLE_IS_PUBLIC,
                     'status' => Article::ARTICLE_STATUS_NORMAL,
-                ])->getField('id,title,author,content,visitcount,commentcount,createtime');
+                ])->getField('id,title,author,content,visitcount,goodcount,badcount,commentcount,createtime');
 
                 $article = $article ? array_values($article) : [];
                 $article = $article ? $article[0] : [];
+
+                // 更新文章访问量
+                if ($article) {
+                    $new_visitcount = $article['visitcount'] + 1;
+
+                    $result = D('article')->where(['id' => $id])->save(['visitcount' => $new_visitcount]);
+
+                    if ($result) {
+                        $article['visitcount'] = $new_visitcount;
+                    }
+                }
             }
 
             // 获取菜单信息
@@ -600,5 +611,97 @@ class ArticleController extends BaseController
 
         // 加载文章搜索页面
         $this->display('article/search');
+    }
+
+    /**
+     * 更新点赞数
+     */
+    public function good()
+    {
+        try {
+            // 获取文章 ID
+            $id = (int)I('post.id');
+
+            // 判断文章 ID 是否有效
+            if (!$id) {
+                echo json_encode(['success' => false, 'msg' => '文章ID无效']);
+                exit;
+            }
+
+            // 获取文章信息
+            $article = D('article')->where(['id' => $id])->getField('id,goodcount,badcount');
+            $article = $article ? array_values($article) : [];
+            $article = $article ? $article[0] : [];
+
+            // 判断文章信息是否存在
+            if (!$article) {
+                echo json_encode(['success' => false, 'msg' => '文章不存在']);
+                exit;
+            }
+
+            // 获取点赞数
+            $good = $article['goodcount'];
+
+            // 更新点赞数
+            $result = D('article')->where(['id' => $id])->save(['goodcount' => $good + 1]);
+
+            // 判断更新是否成功
+            if ($result) {
+                echo json_encode(['success' => true, 'msg' => '操作成功']);
+            } else {
+                echo json_encode(['success' => false, 'msg' => '操作失败']);
+            }
+        } catch (Exception $e) {
+            // 记录错误日志信息
+            Log::write($e->getMessage());
+
+            echo json_encode(['success' => false, 'msg' => '操作失败']);
+        }
+    }
+
+    /**
+     * 更新差评数
+     */
+    public function bad()
+    {
+        try {
+            // 获取文章 ID
+            $id = (int)I('post.id');
+
+            // 判断文章 ID 是否有效
+            if (!$id) {
+                echo json_encode(['success' => false, 'msg' => '文章ID无效']);
+                exit;
+            }
+
+            // 获取文章信息
+            $article = D('article')->where(['id' => $id])->getField('id,goodcount,badcount');
+            $article = $article ? array_values($article) : [];
+            $article = $article ? $article[0] : [];
+
+            // 判断文章信息是否存在
+            if (!$article) {
+                echo json_encode(['success' => false, 'msg' => '文章不存在']);
+                exit;
+            }
+
+            // 获取差评数
+            $bad = $article['badcount'];
+
+            // 更新点赞数
+            $result = D('article')->where(['id' => $id])->save(['badcount' => $bad + 1]);
+
+            // 判断更新是否成功
+            if ($result) {
+                echo json_encode(['success' => true, 'msg' => '操作成功']);
+            } else {
+                echo json_encode(['success' => false, 'msg' => '操作失败']);
+            }
+        } catch (Exception $e) {
+            // 记录错误日志信息
+            Log::write($e->getMessage());
+
+            echo json_encode(['success' => false, 'msg' => '操作失败']);
+        }
     }
 }

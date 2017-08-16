@@ -25,12 +25,13 @@
 					<span>发布时间:</span><{$article['createtime']}>
 					<span>作者:</span><{$article['author']}>
 					<span>浏览量:</span><{$article['visitcount']}>
-                    <span>点赞数:</span><{$article['commentcount']}>
+                    <span>点赞数:</span><b id="title_good_count"><{$article['goodcount']}></b>
 				</h5>
                 <div id="parse_article_content"><{$article['content']}></div>
 				<div style="width: 100%;">
-                    <p class="click"><span id="good">温暖 (1)</span><span id="bad">寒冷 (1)</span></p>
+                    <p class="click"><span id="good">温暖 (<b id="good_count"><{$article['goodcount']}></b>)</span><span id="bad">寒冷 (<b id="bad_count"><{$article['badcount']}></b>)</span></p>
                     <p class="reward">如果您觉得本文章对你有帮助，可以扫下二维码进行打赏。谢谢支持！ ~(@^_^@)~</p>
+                    <input type="hidden" id="article_id" value="<{$article['id']}>" />
                     <p class="reward-mode">
                         <img src="<{$__IMG__}>/zfb-pay.png"/>
                         <img src="<{$__IMG__}>/weixin-pay.png"/>
@@ -184,7 +185,24 @@
                 obj: $(this),
                 str: "+1",
                 callback: function () {
-
+                    $.ajax({
+                        url:"/article/good",
+                        data:{
+                            id: $('#article_id').val()
+                        },
+                        type:'post',
+                        cache:false,
+                        dataType:'json',
+                        async: false,
+                        success:function(result){
+                            if(result.success == true){
+                                $('#title_good_count').text(parseInt($('#title_good_count').text()) + 1);
+                                $('#good_count').text(parseInt($('#good_count').text()) + 1);
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        },
+                    });
                 }
             });
             niceIn($(this));
@@ -195,7 +213,23 @@
                 str: "+1",
                 color: "red",
                 callback: function () {
-
+                    $.ajax({
+                        url:"/article/bad",
+                        data:{
+                            id: $('#article_id').val()
+                        },
+                        type:'post',
+                        cache:false,
+                        dataType:'json',
+                        async: false,
+                        success:function(result){
+                            if(result.success == true){
+                                $('#bad_count').text(parseInt($('#bad_count').text()) + 1);
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        },
+                    });
                 }
             });
             niceIn($(this));

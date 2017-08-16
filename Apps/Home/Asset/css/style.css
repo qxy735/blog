@@ -779,3 +779,6 @@ img{
 	color: #969696;
 	width: auto;
 }
+#good_count,#bad_count,#title_good_count{
+	font-weight: normal;
+}
