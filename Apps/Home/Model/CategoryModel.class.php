@@ -11,6 +11,10 @@ class CategoryModel extends BaseModel
      */
     const CATEGORY_IS_DISABLED = 0;
     /**
+     * 其他分类类型
+     */
+    const CATEGORY_TYPE_OTHER = 3;
+    /**
      * 作品文章类型
      */
     const CATEGORY_TYPE_WORK = 2;
