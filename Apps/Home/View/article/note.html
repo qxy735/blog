@@ -16,7 +16,7 @@
             <volist name="articles" id="article">
                 <div class="note">
                     <span class="line-date"><{$article['createtime']}></span>
-                    <p><{$article['content']}></p>
+                    <{$article['content']}>
                     <ul>
                         <volist name="article['tags']" id="tag">
                             <li class="<{$tag_styles[rand(0, 7)]}>"><{$tag}></li>
